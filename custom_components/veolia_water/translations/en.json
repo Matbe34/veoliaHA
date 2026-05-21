@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Veolia Water",
+        "description": "Sign in to your Veolia / Sorea customer portal.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "portal_url": "Portal URL",
+          "contract_number": "Contract number (optional)"
+        },
+        "data_description": {
+          "portal_url": "Override the portal base URL. Leave as default for Veolia Catalonia.",
+          "contract_number": "Restrict to a specific contract. Leave empty to use whichever the portal returns."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Wrong username or password.",
+      "cdn_blocked": "The portal's CDN returned a block (HTTP 403/429). Try again later.",
+      "cannot_connect": "Could not reach the portal.",
+      "unknown": "Unexpected error. Check the logs."
+    },
+    "abort": {
+      "already_configured": "This account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Veolia Water options",
+        "data": {
+          "scan_interval_hours": "Poll interval (hours)",
+          "contract_number": "Contract number (optional)"
+        }
+      }
+    }
+  }
+}

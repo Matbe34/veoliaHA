@@ -1,0 +1,13 @@
+{
+  "domain": "veolia_water",
+  "name": "Veolia Water",
+  "version": "1.0.0",
+  "documentation": "https://github.com/Matbe34/veoliaHA",
+  "issue_tracker": "https://github.com/Matbe34/veoliaHA/issues",
+  "codeowners": ["@Matbe34"],
+  "config_flow": true,
+  "iot_class": "cloud_polling",
+  "integration_type": "service",
+  "requirements": ["aiohttp>=3.10"],
+  "dependencies": ["recorder"]
+}

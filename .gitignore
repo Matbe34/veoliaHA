@@ -1,0 +1,29 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local probe / dev artifacts
+/tmp/
+last_response.html
+last_error.html
+last_error.*.html
+cookies.txt
+cookies.pickle
+*.swp
+
+# Internal planning + exploratory scripts — not for the public repo
+docs/plans/
+scripts/
+
+# OS junk
+.DS_Store
+Thumbs.db

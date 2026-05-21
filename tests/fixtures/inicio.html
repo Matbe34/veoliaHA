@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Inicio (synthetic)</title></head>
+<body>
+<!--
+  Synthetic test fixture. Mimics the JSON blobs the real /group/soreaonline/inicio
+  page embeds, with fabricated values. Used by tests/test_parser.py to exercise
+  parser.parse_inicio() without needing a live portal session.
+-->
+<script>
+window.contractData = {
+  "contrato": {
+    "number": "9999999",
+    "alias": "",
+    "supplyAddress": "CARRER EXEMPLE 1 1-1",
+    "correspondenceAddress": "CARRER EXEMPLE 1 1-1",
+    "pointOfServiceId": "8888888",
+    "lastInvoiceStatus": "3",
+    "lastInvoiceAmount": 99.99,
+    "smartMetering": true,
+    "ultimoRegistro": "N",
+    "flatRate": false,
+    "cycleComplete": true,
+    "restrictedInvoice": false
+  },
+  "miUltimoConsumo": {
+    "fechaConsumo": "23/02/2026",
+    "lectura": "460",
+    "consumo": "39",
+    "litrosDia": "443",
+    "numeroDias": "88",
+    "periodicidad": "3",
+    "periodo": "1",
+    "anyo": "2026",
+    "lecturaEstimada": false
+  },
+  "miUltimoConsumoAnt": {
+    "fechaConsumo": "27/02/2025",
+    "lectura": "180",
+    "consumo": "36",
+    "litrosDia": "387",
+    "numeroDias": "93",
+    "periodicidad": "3",
+    "periodo": "1",
+    "anyo": "2025",
+    "lecturaEstimada": false
+  },
+  "miUltimaFactura": {
+    "numeroContrato": "9999999",
+    "numeroUltimaFactura": "F2026-000001",
+    "fechaInicioUltimaFactura": "01/01/2026",
+    "fechaFinUltimaFactura": "31/03/2026",
+    "importe": 99.99,
+    "estado": 3,
+    "fechaEmision": "02/03/2026"
+  },
+  "listadoConsumosImportes": [
+    {"anyo": 2026, "periodo": 1, "consumo": "39", "importe": "99,99 €"},
+    {"anyo": 2025, "periodo": 4, "consumo": "40", "importe": "100,84 €"},
+    {"anyo": 2025, "periodo": 3, "consumo": "141", "importe": "382,39 €"},
+    {"anyo": 2025, "periodo": 2, "consumo": "60", "importe": "237,21 €"},
+    {"anyo": 2025, "periodo": 1, "consumo": "36", "importe": "154,47 €"}
+  ]
+};
+</script>
+</body></html>
