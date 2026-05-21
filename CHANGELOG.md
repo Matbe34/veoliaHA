@@ -4,6 +4,14 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [1.0.1] — 2026-05-21
+
+### Fixed
+- Statistics import: switched from `async_import_statistics` (internal,
+  entity-id-keyed) to `async_add_external_statistics` (for the
+  `<source>:<key>` IDs we use). Previously caused setup to fail with
+  `Invalid statistic_id` on first cycle.
+
 ## [1.0.0] — 2026-05-21
 
 Initial release.

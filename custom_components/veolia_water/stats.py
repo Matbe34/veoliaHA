@@ -13,7 +13,7 @@ from typing import Iterable, Optional
 from homeassistant.components.recorder.statistics import (
     StatisticData,
     StatisticMetaData,
-    async_import_statistics,
+    async_add_external_statistics,
 )
 from homeassistant.core import HomeAssistant
 
@@ -64,6 +64,6 @@ def import_daily_series(
         "statistic_id": statistic_id,
         "unit_of_measurement": unit_of_measurement,
     }
-    async_import_statistics(hass, metadata, stats)
+    async_add_external_statistics(hass, metadata, stats)
     _LOGGER.info("Queued %d daily points for %s", len(stats), statistic_id)
     return True
