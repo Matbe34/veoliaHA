@@ -32,7 +32,11 @@
         "title": "Veolia Water options",
         "data": {
           "scan_interval_hours": "Poll interval (hours)",
-          "contract_number": "Contract number (optional)"
+          "contract_number": "Contract number (optional)",
+          "portal_site": "Portal site name (advanced)"
+        },
+        "data_description": {
+          "portal_site": "Liferay site name in the portal URL, e.g. `soreaonline` in /group/soreaonline/inicio. Leave empty to detect it automatically."
         }
       }
     }

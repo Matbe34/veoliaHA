@@ -13,6 +13,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .const import (
     CONF_CONTRACT_NUMBER,
+    CONF_PORTAL_SITE,
     CONF_PORTAL_URL,
     CONF_SCAN_INTERVAL_HOURS,
     DEFAULT_SCAN_INTERVAL_HOURS,
@@ -31,7 +32,7 @@ from .parser import (
     parse_monthly_response,
     summarize_flow,
 )
-from .portal import DEFAULT_BASE_URL
+from .portal import DEFAULT_BASE_URL, apply_overrides, profile_for_url
 from .stats import import_daily_series
 from .veolia_client import (
     CDNBlockedError,
@@ -62,6 +63,9 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
         self._password: str = opts[CONF_PASSWORD]
         self._base_url: str = (opts.get(CONF_PORTAL_URL) or DEFAULT_BASE_URL).rstrip("/")
         self._contract_filter: Optional[str] = (opts.get(CONF_CONTRACT_NUMBER) or "").strip() or None
+        self._profile = apply_overrides(
+            profile_for_url(self._base_url), {"site": opts.get(CONF_PORTAL_SITE)}
+        )
         self._store: Store = Store(hass, STORAGE_VERSION, f"{STORAGE_KEY}_{entry.entry_id}")
         self._persisted: dict[str, Any] = {}
 
@@ -88,7 +92,10 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
         return snapshot
 
     async def _fetch_cycle(self) -> Snapshot:
-        async with VeoliaClient(self._username, self._password, base_url=self._base_url) as client:
+        async with VeoliaClient(
+            self._username, self._password,
+            base_url=self._base_url, profile=self._profile,
+        ) as client:
             await client.login()
             html = await client.fetch_inicio()
             contract, reading, invoice, history = parse_inicio(html)

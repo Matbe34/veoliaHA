@@ -32,10 +32,12 @@
         "title": "Veolia Water options",
         "data": {
           "scan_interval_hours": "Poll interval (hours)",
-          "contract_number": "Contract number (optional)"
+          "contract_number": "Contract number (optional)",
+          "portal_site": "Portal site name (advanced)"
         },
         "data_description": {
-          "scan_interval_hours": "How often to poll the portal. 6 h matches the smart meter's daily upload cadence."
+          "scan_interval_hours": "How often to poll the portal. 6 h matches the smart meter's daily upload cadence.",
+          "portal_site": "Liferay site name in the portal URL, e.g. `soreaonline` in /group/soreaonline/inicio. Leave empty to detect it automatically."
         }
       }
     }

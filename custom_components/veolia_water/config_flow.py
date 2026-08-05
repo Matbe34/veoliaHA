@@ -12,6 +12,7 @@ from homeassistant.data_entry_flow import FlowResult
 
 from .const import (
     CONF_CONTRACT_NUMBER,
+    CONF_PORTAL_SITE,
     CONF_PORTAL_URL,
     CONF_SCAN_INTERVAL_HOURS,
     DEFAULT_SCAN_INTERVAL_HOURS,
@@ -87,6 +88,10 @@ class VeoliaOptionsFlow(config_entries.OptionsFlow):
             vol.Optional(
                 CONF_CONTRACT_NUMBER,
                 default=current.get(CONF_CONTRACT_NUMBER, ""),
+            ): str,
+            vol.Optional(
+                CONF_PORTAL_SITE,
+                default=current.get(CONF_PORTAL_SITE, ""),
             ): str,
         })
         return self.async_show_form(step_id="init", data_schema=schema)
