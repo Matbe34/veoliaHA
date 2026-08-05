@@ -8,8 +8,10 @@ meters) per-day flow telemetry and 90 days of historical statistics imported
 into HA's recorder.
 
 Verified against [`sorea.veolia.cat`](https://sorea.veolia.cat) (Veolia
-Catalonia). The portal base URL is configurable, so the integration can be
-pointed at other Liferay-based Veolia portals that expose the same JSON shape.
+Catalonia). Other Veolia-group portals run the same Liferay application under
+a different site name, which the integration discovers at login — set the
+portal base URL and try it. If the landing page can't be found, run
+`scripts/probe_portal.py` (see [Unsupported portals](#unsupported-portals)).
 
 ## Install via HACS
 
@@ -60,6 +62,24 @@ The portal does not publish per-day cumulative meter readings for non-smart
 meters, only period-level (~90 d) totals. The cumulative `meter_index`
 therefore updates on billing-period boundaries for manual meters. For smart
 meters (`telelectura`) it refreshes daily.
+
+## Unsupported portals
+
+Each tenant runs the same application under its own Liferay *site name* — the
+`soreaonline` in `/group/soreaonline/inicio`. That name is detected from the
+post-login redirect, so most portals need nothing but the base URL. If
+detection fails, find the name in your browser's address bar after logging in
+and set **Portal site name** in the integration options.
+
+To report a portal that still doesn't work:
+
+```bash
+VEOLIA_USER='you@example.com' VEOLIA_PASSWORD='...' \
+    python scripts/probe_portal.py https://your-portal.example
+```
+
+It prints paths, portlet ids and which JSON blocks the page carries — key
+names only, never values — so the output is safe to paste into an issue.
 
 ## Privacy
 

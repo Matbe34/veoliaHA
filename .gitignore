@@ -20,9 +20,11 @@ cookies.txt
 cookies.pickle
 *.swp
 
-# Internal planning + exploratory scripts — not for the public repo
+# Internal planning + exploratory scripts — not for the public repo.
+# probe_portal.py is the exception: users run it to report unsupported portals.
 docs/plans/
-scripts/
+scripts/*
+!scripts/probe_portal.py
 
 # OS junk
 .DS_Store

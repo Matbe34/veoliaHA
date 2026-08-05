@@ -4,6 +4,24 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [1.1.0] — 2026-08-05
+
+### Added
+- `PortalProfile` per tenant (`portal.py`), replacing the module-level Sorea
+  constants. Profiles for Sorea (confirmed), Agbar and Hidrogea.
+- The Liferay site name is discovered from the post-login redirect, so a
+  portal no longer has to be known in advance to be reachable.
+- **Portal site name** override in the integration options for portals where
+  detection fails.
+- `scripts/probe_portal.py` — logs in and reports paths, portlet ids and JSON
+  block key names, with credentials and values redacted.
+
+### Fixed
+- Login success and session-expiry are detected from the Liferay auth cookie
+  (falling back to "no login form present") instead of matching the literal
+  string `soreaonline` in the URL, which reported a successful login as
+  `Authentication rejected` on every non-Sorea portal.
+
 ## [1.0.2] — 2026-08-05
 
 ### Fixed
