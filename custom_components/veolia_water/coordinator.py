@@ -78,7 +78,13 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
         except (ParseError, VeoliaError) as e:
             raise UpdateFailed(f"portal: {e}") from e
 
-        await self._maybe_import_statistics(snapshot)
+        # The backfill is a nice-to-have: never let a recorder hiccup discard a
+        # snapshot we already fetched successfully (or fail the initial setup).
+        try:
+            await self._maybe_import_statistics(snapshot)
+        except Exception:  # noqa: BLE001 — best-effort history import
+            _LOGGER.exception("Statistics backfill failed; continuing without it.")
+
         return snapshot
 
     async def _fetch_cycle(self) -> Snapshot:

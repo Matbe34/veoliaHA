@@ -130,6 +130,86 @@ def test_parse_inicio_rejects_html_without_contrato_block():
         parse_inicio(html)
 
 
+def test_parse_inicio_rejects_contrato_without_a_number():
+    html = '<script>var x = {"contrato":{"supplyAddress":"CARRER X"}};</script>'
+    with pytest.raises(ParseError):
+        parse_inicio(html)
+
+
+# ----- degraded pages: missing optional blocks must not raise --------------
+def test_parse_inicio_without_ultimo_consumo_zeroes_consumption():
+    html = '<script>var x = {"contrato":{"number":"9999999","smartMetering":true}};</script>'
+    contract, reading, invoice, history = parse_inicio(html)
+
+    assert contract.contract_number == "9999999"
+    assert reading.consumption_period_m3 == 0.0
+    assert reading.consumption_daily_l == 0
+    assert reading.consumption_monthly_m3 == 0.0
+    # Left unknown on purpose — a fake 0 here would read as a meter reset.
+    assert reading.meter_index_m3 is None
+    assert reading.last_reading_date is None
+    assert reading.reading_type is None
+    assert reading.period_days is None
+    assert reading.period_year is None
+    assert invoice.amount_eur is None
+    assert history == []
+
+
+def test_parse_inicio_with_empty_ultimo_consumo_block():
+    html = (
+        '<script>var x = {"contrato":{"number":"9999999"},'
+        '"miUltimoConsumo":{}};</script>'
+    )
+    _, reading, _, _ = parse_inicio(html)
+    assert reading.consumption_period_m3 == 0.0
+    assert reading.consumption_daily_l == 0
+    assert reading.reading_type is None
+
+
+def test_parse_inicio_with_partial_ultimo_consumo_block():
+    """A block that's present but missing fields zeroes only what's absent."""
+    html = (
+        '<script>var x = {"contrato":{"number":"9999999"},'
+        '"miUltimoConsumo":{"lectura":"460","fechaConsumo":"23/02/2026"}};</script>'
+    )
+    _, reading, _, _ = parse_inicio(html)
+    assert reading.meter_index_m3 == pytest.approx(460.0)
+    assert reading.last_reading_date == date(2026, 2, 23)
+    assert reading.consumption_period_m3 == 0.0
+    assert reading.consumption_monthly_m3 == 0.0
+    assert reading.reading_type == "real"
+
+
+def test_parse_inicio_falls_back_to_invoice_for_contract_number():
+    html = (
+        '<script>var x = {"contrato":{"supplyAddress":"CARRER X"},'
+        '"miUltimaFactura":{"numeroContrato":"9999999","importe":99.99}};</script>'
+    )
+    contract, reading, invoice, _ = parse_inicio(html)
+    assert contract.contract_number == "9999999"
+    assert reading.contract_number == "9999999"
+    assert invoice.amount_eur == pytest.approx(99.99)
+
+
+def test_parse_inicio_accepts_blocks_wrapped_in_an_array():
+    html = (
+        '<script>var x = {"contrato":[{"number":"9999999"}],'
+        '"miUltimoConsumo":[{"consumo":"39","numeroDias":"88"}]};</script>'
+    )
+    contract, reading, _, _ = parse_inicio(html)
+    assert contract.contract_number == "9999999"
+    assert reading.consumption_period_m3 == pytest.approx(39.0)
+
+
+def test_parse_inicio_ignores_non_dict_history_entries():
+    html = (
+        '<script>var x = {"contrato":{"number":"9999999"},'
+        '"listadoConsumosImportes":[{"anyo":2026},"junk",null]};</script>'
+    )
+    *_, history = parse_inicio(html)
+    assert history == [{"anyo": 2026}]
+
+
 # ----- caudales (daily flow telemetry) ------------------------------------
 @pytest.mark.parametrize(
     "raw,expected",
@@ -255,6 +335,16 @@ def test_parse_daily_response_handles_garbage():
     assert parse_daily_response("nope") == []
 
 
+def test_parse_daily_response_handles_non_string_consumption_class():
+    payload = {"consumos": [{
+        "fechaConsumo": "19/05/2026",
+        "consumo": "1,5",
+        "consumptionType": {"consumptionClass": 3},
+    }]}
+    out = parse_daily_response(payload)
+    assert len(out) == 1 and out[0].is_estimated is False
+
+
 def test_parse_monthly_response_basic():
     payload = {
         "ultimaPagina": True,
@@ -270,3 +360,11 @@ def test_parse_monthly_response_basic():
     assert out[0].consumo_m3 == pytest.approx(8.373, rel=1e-4)
     assert out[2].year == 2025 and out[2].month == 12
     assert out[2].consumo_m3 == pytest.approx(13.641, rel=1e-4)
+
+
+def test_parse_monthly_response_handles_garbage():
+    assert parse_monthly_response({"consumos": [{"fechaConsumo": 2026}]}) == []
+    assert parse_monthly_response({"consumos": [{"fechaConsumo": None}]}) == []
+    assert parse_monthly_response({"consumos": ["junk"]}) == []
+    assert parse_monthly_response({}) == []
+    assert parse_monthly_response("nope") == []

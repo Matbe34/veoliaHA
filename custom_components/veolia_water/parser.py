@@ -81,6 +81,17 @@ def parse_int(text: Any) -> Optional[int]:
     return int(v) if v is not None else None
 
 
+def _decimal_or_zero(text: Any) -> float:
+    """Like `parse_decimal`, but an absent/unparseable value counts as zero."""
+    v = parse_decimal(text)
+    return 0.0 if v is None else v
+
+
+def _int_or_zero(text: Any) -> int:
+    v = parse_int(text)
+    return 0 if v is None else v
+
+
 def parse_date(text: Any) -> Optional[date]:
     """Numeric date formats only — DD/MM/YYYY, YYYY-MM-DD, etc."""
     if text is None:
@@ -177,6 +188,19 @@ def _balanced_json(text: str, start: int) -> Optional[str]:
     return None
 
 
+def _as_dict(value: Any) -> Optional[dict]:
+    """Coerce an extracted block to a dict, or None if there isn't one.
+
+    Some portal variants wrap a single-object block in an array; take the
+    first object in that case rather than treating the block as absent.
+    """
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, list):
+        return next((item for item in value if isinstance(item, dict)), None)
+    return None
+
+
 def extract_json_block(html: str, key: str) -> Optional[Any]:
     """Find the first occurrence of `"<key>": {...}` or `"<key>": [...]` and json.loads it.
 
@@ -198,27 +222,50 @@ def extract_json_block(html: str, key: str) -> Optional[Any]:
 def parse_inicio(html: str) -> tuple[Contract, Reading, Invoice, list[dict]]:
     """Pull the headline data off the /inicio page.
 
-    Raises ParseError when the structured blocks aren't present — usually
-    the page rendered as guest because the session was invalid.
+    Only `contrato` is mandatory: without a contract number we can't build
+    stable entity ids, and its absence means the page rendered as guest
+    because the session was invalid — exactly the case a retry fixes.
+
+    Every other block is optional. Accounts with no billed period yet, or
+    with a portal layout that omits a block, get zeroed consumption values
+    and a warning instead of a failed setup.
     """
-    contrato = extract_json_block(html, "contrato")
-    ultimo = extract_json_block(html, "miUltimoConsumo")
-    factura = extract_json_block(html, "miUltimaFactura")
+    contrato = _as_dict(extract_json_block(html, "contrato"))
+    ultimo = _as_dict(extract_json_block(html, "miUltimoConsumo"))
+    factura = _as_dict(extract_json_block(html, "miUltimaFactura"))
     historico = extract_json_block(html, "listadoConsumosImportes")
 
-    if not isinstance(contrato, dict):
+    if contrato is None:
         raise ParseError("inicio page is missing the `contrato` block")
-    if not isinstance(ultimo, dict):
-        raise ParseError("inicio page is missing the `miUltimoConsumo` block")
 
-    contract = _build_contract(contrato)
-    reading = _build_reading(contract.contract_number, ultimo)
+    contract = _build_contract(contrato, factura)
+    if not contract.contract_number:
+        raise ParseError("inicio page has a `contrato` block with no contract number")
+
+    if ultimo is None:
+        _LOGGER.warning(
+            "inicio page has no `miUltimoConsumo` block for contract %s — "
+            "treating this period's consumption as zero.",
+            contract.contract_number,
+        )
+    reading = _build_reading(contract.contract_number, ultimo or {})
+
+    if factura is None:
+        _LOGGER.debug(
+            "inicio page has no `miUltimaFactura` block for contract %s.",
+            contract.contract_number,
+        )
     invoice = (
         _build_invoice(contract.contract_number, factura)
-        if isinstance(factura, dict)
+        if factura is not None
         else Invoice(contract_number=contract.contract_number)
     )
-    history = historico if isinstance(historico, list) else []
+
+    history = (
+        [item for item in historico if isinstance(item, dict)]
+        if isinstance(historico, list)
+        else []
+    )
     return contract, reading, invoice, history
 
 
@@ -278,7 +325,7 @@ def parse_daily_response(payload: dict) -> list[DailyConsumption]:
         ct = item.get("consumptionType") or {}
         is_est = bool(item.get("lecturaEstimada")) or (
             isinstance(ct, dict)
-            and "estimada" in (ct.get("consumptionClass") or "").lower()
+            and "estimada" in str(ct.get("consumptionClass") or "").lower()
         )
         out.append(DailyConsumption(
             fecha=d,
@@ -298,7 +345,7 @@ def parse_monthly_response(payload: dict) -> list[MonthlyConsumption]:
     for item in payload.get("consumos") or []:
         if not isinstance(item, dict):
             continue
-        fc = (item.get("fechaConsumo") or "").strip().lower().replace(".", "")
+        fc = str(item.get("fechaConsumo") or "").strip().lower().replace(".", "")
         parts = fc.split()
         if len(parts) < 2:
             continue
@@ -323,9 +370,26 @@ def parse_monthly_response(payload: dict) -> list[MonthlyConsumption]:
     return out
 
 
-def _build_contract(blob: dict) -> Contract:
+# The portal labels the contract number differently depending on the block.
+_CONTRACT_NUMBER_KEYS = ("number", "numeroContrato", "contractNumber")
+
+
+def _contract_number_from(blob: Optional[dict]) -> str:
+    if not isinstance(blob, dict):
+        return ""
+    for key in _CONTRACT_NUMBER_KEYS:
+        number = str(blob.get(key) or "").strip()
+        if number:
+            return number
+    return ""
+
+
+def _build_contract(blob: dict, factura: Optional[dict] = None) -> Contract:
+    # `miUltimaFactura` repeats the contract number, so it covers a `contrato`
+    # block that arrives without one.
+    number = _contract_number_from(blob) or _contract_number_from(factura)
     return Contract(
-        contract_number=str(blob.get("number") or "").strip(),
+        contract_number=number,
         address=_strip(blob.get("supplyAddress")),
         smart_metering=bool(blob.get("smartMetering")),
         point_of_service_id=_strip(blob.get("pointOfServiceId")),
@@ -334,21 +398,33 @@ def _build_contract(blob: dict) -> Contract:
 
 
 def _build_reading(contract_number: str, ultimo: dict) -> Reading:
-    consumo = parse_decimal(ultimo.get("consumo"))
+    # Consumption quantities default to 0 — "the portal didn't report any" and
+    # "none was used" are the same thing for a totaliser. The meter index is
+    # deliberately left None: it's `total_increasing`, so a fabricated 0 would
+    # look like a meter reset and double-count the whole index in long-term
+    # statistics. Same reasoning for the dates and the period identifiers,
+    # where 0 isn't a meaningful value at all.
+    consumo = _decimal_or_zero(ultimo.get("consumo"))
     numero_dias = parse_int(ultimo.get("numeroDias"))
 
-    monthly_m3: Optional[float] = None
-    if consumo is not None and numero_dias and numero_dias > 0:
-        monthly_m3 = round(consumo / numero_dias * 30, 3)
+    monthly_m3 = (
+        round(consumo / numero_dias * 30, 3)
+        if numero_dias and numero_dias > 0
+        else 0.0
+    )
 
     return Reading(
         contract_number=contract_number,
         meter_index_m3=parse_decimal(ultimo.get("lectura")),
         consumption_period_m3=consumo,
-        consumption_daily_l=parse_int(ultimo.get("litrosDia")),
+        consumption_daily_l=_int_or_zero(ultimo.get("litrosDia")),
         consumption_monthly_m3=monthly_m3,
         last_reading_date=parse_date(ultimo.get("fechaConsumo")),
-        reading_type="estimated" if ultimo.get("lecturaEstimada") else "real",
+        reading_type=(
+            ("estimated" if ultimo.get("lecturaEstimada") else "real")
+            if ultimo
+            else None
+        ),
         period_days=numero_dias,
         period_year=parse_int(ultimo.get("anyo")),
         period_number=parse_int(ultimo.get("periodo")),

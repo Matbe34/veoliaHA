@@ -4,6 +4,24 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [1.0.2] — 2026-08-05
+
+### Fixed
+- Setup no longer fails with `portal: inicio page is missing the
+  `miUltimoConsumo` block`. Only `contrato` is required now (its absence still
+  means the page rendered as guest); `miUltimoConsumo`, `miUltimaFactura` and
+  `listadoConsumosImportes` are optional and degrade to zero / unknown.
+- Missing consumption values report 0 instead of failing: period consumption,
+  period average daily, and derived monthly. Meter index, reading dates and
+  period identifiers stay unknown — a fabricated 0 on a `total_increasing`
+  meter would look like a reset and double-count the index in statistics.
+- `contrato` blocks without a `number` fall back to `miUltimaFactura`'s
+  `numeroContrato`; blocks wrapped in a one-element array are accepted.
+- Non-string `fechaConsumo` / `consumptionClass` values in the consumption
+  endpoints no longer raise `AttributeError`.
+- A failing long-term-statistics backfill is logged instead of discarding an
+  otherwise-good cycle (and failing initial setup).
+
 ## [1.0.1] — 2026-05-21
 
 ### Fixed
