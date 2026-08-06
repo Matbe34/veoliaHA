@@ -4,6 +4,36 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [1.1.1] — 2026-08-06
+
+### Added
+- Aigües de Barcelona (`agbar.veolia.cat`) profile, from the probe output on
+  issue #3. The site (`sgab`) is left to discovery rather than pinned, so
+  login keeps sending no `redirect` — the flow the probe actually exercised.
+- `probe_portal.py` now runs the integration's own parser against the landing
+  page and calls the three consumption endpoints, reporting record counts and
+  response key names. Page structure alone couldn't show whether the data API
+  answers in the shape the parser expects.
+
+### Security
+- `probe_portal.py` redaction hardened, since its output is meant for public
+  issues: every line now routes through the scrubber (the linked-pages list
+  bypassed it), and emails plus 6+ digit runs — contract numbers, DNI, meter
+  serials — are stripped even when not supplied as credentials. The page-link
+  regex no longer runs past the href and pulls surrounding page text, which
+  could include any of the above.
+
+### Fixed
+- Landing pages without a `contrato` block (Agbar serves every other block but
+  not that one) now take the contract number from `miUltimaFactura` instead of
+  failing setup with `inicio page is missing the contrato block`.
+- Smart-meter endpoints are probed when the portal doesn't report a
+  `smartMetering` flag, rather than assumed absent, and an unavailable
+  consumption page no longer fails the whole cycle.
+- The **Portal site name** option accepts a pasted path or full URL
+  (`/group/sgab/inicio`) as well as a bare site name; previously it produced
+  `/group//group/sgab/inicio/inicio` and a 404.
+
 ## [1.1.0] — 2026-08-05
 
 ### Added
