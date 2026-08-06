@@ -130,7 +130,7 @@ def test_parse_inicio_rejects_html_without_contrato_block():
         parse_inicio(html)
 
 
-def test_parse_inicio_rejects_contrato_without_a_number():
+def test_parse_inicio_rejects_a_page_with_no_contract_number_anywhere():
     html = '<script>var x = {"contrato":{"supplyAddress":"CARRER X"}};</script>'
     with pytest.raises(ParseError):
         parse_inicio(html)
@@ -178,6 +178,41 @@ def test_parse_inicio_with_partial_ultimo_consumo_block():
     assert reading.consumption_period_m3 == 0.0
     assert reading.consumption_monthly_m3 == 0.0
     assert reading.reading_type == "real"
+
+
+def test_parse_inicio_handles_agbar_shape_without_contrato_block():
+    """Agbar serves every block except `contrato` (issue #3 probe output)."""
+    html = (
+        '<script>var x = {'
+        '"miUltimoConsumo":{"lectura":"460","consumo":"39","litrosDia":"443",'
+        '"numeroDias":"88","fechaConsumo":"23/02/2026","lecturaEstimada":false},'
+        '"miUltimaFactura":{"numeroContrato":"9999999","importe":99.99,'
+        '"estado":3,"fechaEmision":"02/03/2026"},'
+        '"listadoConsumosImportes":[{"anyo":2026,"periodo":1,"consumo":"39"}]'
+        '};</script>'
+    )
+    contract, reading, invoice, history = parse_inicio(html)
+
+    assert contract.contract_number == "9999999"
+    assert contract.address is None
+    # Unknown, not False — the caller must still probe the smart-meter API.
+    assert contract.smart_metering is None
+    assert reading.meter_index_m3 == pytest.approx(460.0)
+    assert reading.consumption_period_m3 == pytest.approx(39.0)
+    assert reading.consumption_daily_l == 443
+    assert invoice.amount_eur == pytest.approx(99.99)
+    assert invoice.status == "paid"
+    assert len(history) == 1
+
+
+def test_parse_inicio_still_reports_smart_metering_when_contrato_is_present():
+    html = '<script>var x = {"contrato":{"number":"1","smartMetering":true}};</script>'
+    contract, *_ = parse_inicio(html)
+    assert contract.smart_metering is True
+
+    html = '<script>var x = {"contrato":{"number":"1","smartMetering":false}};</script>'
+    contract, *_ = parse_inicio(html)
+    assert contract.smart_metering is False
 
 
 def test_parse_inicio_falls_back_to_invoice_for_contract_number():

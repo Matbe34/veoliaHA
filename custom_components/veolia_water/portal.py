@@ -60,12 +60,15 @@ PROFILES: tuple[PortalProfile, ...] = (
         confirmed=True,
         accept_language="ca,es;q=0.9,en;q=0.8",
     ),
-    # Unconfirmed (issue #3). Same region/language as Sorea, so its defaults
-    # are the likeliest fit.
+    # Confirmed via probe output on issue #3. Discovery finds site `sgab`;
+    # left unset deliberately, because pinning it makes login POST a
+    # `redirect` param that the probe never exercised. Serves no `contrato`
+    # block — the contract number comes from `miUltimaFactura` instead.
     PortalProfile(
         key="agbar",
         name="Aigües de Barcelona (Catalonia)",
         base_url="https://agbar.veolia.cat",
+        confirmed=True,
         accept_language="ca,es;q=0.9,en;q=0.8",
     ),
     # Unconfirmed (issue #5).
@@ -98,6 +101,16 @@ def site_from_url(url: str) -> Optional[str]:
     return m.group(1) if m else None
 
 
+def normalize_site(value: str) -> str:
+    """Accept a bare site name, a portal path, or a full URL.
+
+    Users reasonably paste `/group/sgab/inicio` or the whole address bar;
+    taking that literally builds `/group//group/sgab/inicio/inicio`.
+    """
+    value = (value or "").strip()
+    return site_from_url(value) or value.strip("/").split("/")[-1]
+
+
 def apply_overrides(profile: PortalProfile, overrides: dict) -> PortalProfile:
     """Layer non-blank user overrides onto a profile."""
     fields = (
@@ -109,6 +122,8 @@ def apply_overrides(profile: PortalProfile, overrides: dict) -> PortalProfile:
         for f in fields
         if overrides.get(f) is not None and str(overrides[f]).strip()
     }
+    if "site" in patch:
+        patch["site"] = normalize_site(patch["site"])
     return replace(profile, **patch) if patch else profile
 
 

@@ -127,12 +127,14 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
                 monthly=monthly,
             )
 
-    async def _fetch_smart_meter_data(self, client: VeoliaClient, is_smart: bool):
+    async def _fetch_smart_meter_data(self, client: VeoliaClient, is_smart: Optional[bool]):
         caudales: list = []
         daily: list = []
         monthly: list = []
         flow = FlowSummary()
-        if not is_smart:
+        # Only skip when the portal said "not a smart meter". If it didn't say
+        # (no `contrato` block), probe anyway — the endpoints degrade quietly.
+        if is_smart is False:
             return caudales, daily, monthly, flow
 
         today = datetime.now(timezone.utc).date()
@@ -140,6 +142,9 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
             consumos_html = await client.fetch_consumos_page()
         except SessionExpiredError:
             _LOGGER.warning("Session expired during smart-meter fetch — skipping this cycle.")
+            return caudales, daily, monthly, flow
+        except VeoliaError as e:
+            _LOGGER.warning("Consumos page unavailable (%s); skipping smart-meter data.", e)
             return caudales, daily, monthly, flow
 
         p_auth = client.extract_auth_token(consumos_html)

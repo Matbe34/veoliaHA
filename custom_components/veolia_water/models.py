@@ -10,7 +10,7 @@ from typing import Optional
 class Contract:
     contract_number: str
     address: Optional[str] = None
-    smart_metering: bool = False
+    smart_metering: Optional[bool] = None  # None = portal didn't say
     point_of_service_id: Optional[str] = None
     last_invoice_status_code: Optional[str] = None
 

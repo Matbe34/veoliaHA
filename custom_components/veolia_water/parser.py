@@ -235,12 +235,20 @@ def parse_inicio(html: str) -> tuple[Contract, Reading, Invoice, list[dict]]:
     factura = _as_dict(extract_json_block(html, "miUltimaFactura"))
     historico = extract_json_block(html, "listadoConsumosImportes")
 
-    if contrato is None:
-        raise ParseError("inicio page is missing the `contrato` block")
-
-    contract = _build_contract(contrato, factura)
+    # Agbar's landing page carries no `contrato` block, but `miUltimaFactura`
+    # repeats the contract number, which is all we need to key the entities.
+    contract = _build_contract(contrato or {}, factura)
     if not contract.contract_number:
-        raise ParseError("inicio page has a `contrato` block with no contract number")
+        raise ParseError(
+            "inicio page has no contract number in either `contrato` or "
+            "`miUltimaFactura` — the session probably rendered as guest"
+        )
+    if contrato is None:
+        _LOGGER.warning(
+            "inicio page has no `contrato` block for contract %s — address and "
+            "smart-metering flag unknown.",
+            contract.contract_number,
+        )
 
     if ultimo is None:
         _LOGGER.warning(
@@ -388,10 +396,12 @@ def _build_contract(blob: dict, factura: Optional[dict] = None) -> Contract:
     # `miUltimaFactura` repeats the contract number, so it covers a `contrato`
     # block that arrives without one.
     number = _contract_number_from(blob) or _contract_number_from(factura)
+    smart = blob.get("smartMetering")
     return Contract(
         contract_number=number,
         address=_strip(blob.get("supplyAddress")),
-        smart_metering=bool(blob.get("smartMetering")),
+        # None = unknown; the caller probes the smart-meter endpoints anyway.
+        smart_metering=bool(smart) if smart is not None else None,
         point_of_service_id=_strip(blob.get("pointOfServiceId")),
         last_invoice_status_code=_strip(blob.get("lastInvoiceStatus")),
     )

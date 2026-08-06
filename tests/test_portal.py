@@ -35,12 +35,22 @@ def test_profile_for_url_selects_by_hostname(url, key):
     assert profile_for_url(url).key == key
 
 
-def test_unconfirmed_profiles_leave_the_site_to_discovery():
-    for url in ("https://agbar.veolia.cat", "https://hidrogea.veolia.es"):
-        p = profile_for_url(url)
-        assert p.confirmed is False
-        assert p.site is None
-        assert p.inicio_path is None
+def test_agbar_profile_matches_the_probe_output_from_issue_3():
+    p = profile_for_url("https://agbar.veolia.cat")
+    assert p.confirmed
+    # Site stays unset so login sends no `redirect`, matching the probed flow.
+    assert p.site is None
+    discovered = p.with_site("sgab")
+    assert discovered.inicio_path == "/group/sgab/inicio"
+    assert discovered.consumos_path == "/group/sgab/mis-consumos"
+    assert discovered.consumos_portlet == "MisConsumos"
+
+
+def test_profiles_without_a_site_leave_it_to_discovery():
+    p = profile_for_url("https://hidrogea.veolia.es")
+    assert p.confirmed is False
+    assert p.site is None
+    assert p.inicio_path is None
 
 
 def test_generic_profile_keeps_the_given_base_url():
@@ -80,6 +90,20 @@ def test_apply_overrides_ignores_blanks():
     assert apply_overrides(p, {}) is p
     assert apply_overrides(p, {"site": ""}) is p
     assert apply_overrides(p, {"site": None}) is p
+
+
+@pytest.mark.parametrize("value", [
+    "sgab",
+    " sgab ",
+    "/group/sgab/inicio",
+    "group/sgab",
+    "https://agbar.veolia.cat/ca/group/sgab/inicio",
+])
+def test_site_override_accepts_a_pasted_path_or_url(value):
+    """Issue #3: pasting the whole path built /group//group/sgab/inicio/inicio."""
+    p = apply_overrides(profile_for_url("https://agbar.veolia.cat"), {"site": value})
+    assert p.site == "sgab"
+    assert p.inicio_path == "/group/sgab/inicio"
 
 
 def test_apply_overrides_sets_site_and_portlets():
