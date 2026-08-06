@@ -4,6 +4,20 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [1.1.2] — 2026-08-06
+
+### Fixed
+- Long-term statistics (daily consumption, meter index, monthly consumption,
+  peak flow) were imported once at setup and never again, so every series froze
+  at whatever the first cycle saw while the portal kept publishing new days.
+  The import now runs on every coordinator cycle; re-pushing the fetched window
+  is idempotent, since `async_add_external_statistics` overwrites points that
+  share a `start`. Existing installs recover on the next cycle — no reinstall.
+
+### Removed
+- The persistent `Store` and `STATS_IMPORT_VERSION`, which existed only to hold
+  the one-shot import flag.
+
 ## [1.1.1] — 2026-08-06
 
 ### Added

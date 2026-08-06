@@ -65,5 +65,5 @@ def import_daily_series(
         "unit_of_measurement": unit_of_measurement,
     }
     async_add_external_statistics(hass, metadata, stats)
-    _LOGGER.info("Queued %d daily points for %s", len(stats), statistic_id)
+    _LOGGER.debug("Queued %d daily points for %s", len(stats), statistic_id)
     return True

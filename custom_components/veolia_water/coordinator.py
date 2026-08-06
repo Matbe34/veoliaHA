@@ -1,14 +1,13 @@
-"""DataUpdateCoordinator — owns the cycle and the persistent state store."""
+"""DataUpdateCoordinator — owns the fetch cycle and the statistics import."""
 from __future__ import annotations
 
 import logging
 from datetime import date, datetime, timedelta, timezone
-from typing import Any, Optional
+from typing import Optional
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.storage import Store
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
@@ -18,10 +17,7 @@ from .const import (
     CONF_SCAN_INTERVAL_HOURS,
     DEFAULT_SCAN_INTERVAL_HOURS,
     DOMAIN,
-    STATS_IMPORT_VERSION,
     STATS_SOURCE,
-    STORAGE_KEY,
-    STORAGE_VERSION,
 )
 from .models import Snapshot, FlowSummary
 from .parser import (
@@ -66,11 +62,6 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
         self._profile = apply_overrides(
             profile_for_url(self._base_url), {"site": opts.get(CONF_PORTAL_SITE)}
         )
-        self._store: Store = Store(hass, STORAGE_VERSION, f"{STORAGE_KEY}_{entry.entry_id}")
-        self._persisted: dict[str, Any] = {}
-
-    async def async_init_store(self) -> None:
-        self._persisted = (await self._store.async_load()) or {}
 
     async def _async_update_data(self) -> Snapshot:
         try:
@@ -82,12 +73,12 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
         except (ParseError, VeoliaError) as e:
             raise UpdateFailed(f"portal: {e}") from e
 
-        # The backfill is a nice-to-have: never let a recorder hiccup discard a
-        # snapshot we already fetched successfully (or fail the initial setup).
+        # The history push is a nice-to-have: never let a recorder hiccup discard
+        # a snapshot we already fetched successfully (or fail the initial setup).
         try:
-            await self._maybe_import_statistics(snapshot)
+            self._import_statistics(snapshot)
         except Exception:  # noqa: BLE001 — best-effort history import
-            _LOGGER.exception("Statistics backfill failed; continuing without it.")
+            _LOGGER.exception("Statistics import failed; continuing without it.")
 
         return snapshot
 
@@ -185,20 +176,19 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
 
         return caudales, daily, monthly, flow
 
-    async def _maybe_import_statistics(self, snap: Snapshot) -> None:
-        """One-time backfill of daily / monthly history into HA's recorder."""
+    def _import_statistics(self, snap: Snapshot) -> None:
+        """Push the fetched history into HA's recorder — every cycle, not once.
+
+        Re-pushing the whole window is idempotent: `async_add_external_statistics`
+        overwrites points sharing a `start` and leaves older ones alone.
+        """
         cnum = snap.contract.contract_number
-        contracts_state = self._persisted.setdefault("contracts", {})
-        cstate = contracts_state.setdefault(cnum, {})
-        if cstate.get("stats_imported_version", 0) >= STATS_IMPORT_VERSION:
-            return
         if not (snap.caudales or snap.daily or snap.monthly):
             return
 
         slug = _slug(cnum)
-        any_ok = False
         if snap.caudales:
-            any_ok |= import_daily_series(
+            import_daily_series(
                 self.hass,
                 statistic_id=f"{STATS_SOURCE}:flow_qmax_{slug}",
                 name=f"Veolia {cnum} daily peak flow",
@@ -206,14 +196,14 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
                 daily_values=[(c.fecha, c.q_max_m3h) for c in snap.caudales],
             )
         if snap.daily:
-            any_ok |= import_daily_series(
+            import_daily_series(
                 self.hass,
                 statistic_id=f"{STATS_SOURCE}:daily_consumption_{slug}",
                 name=f"Veolia {cnum} daily consumption",
                 unit_of_measurement="m³",
                 daily_values=[(d.fecha, d.consumo_m3) for d in snap.daily],
             )
-            any_ok |= import_daily_series(
+            import_daily_series(
                 self.hass,
                 statistic_id=f"{STATS_SOURCE}:meter_index_{slug}",
                 name=f"Veolia {cnum} meter index",
@@ -221,16 +211,13 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
                 daily_values=[(d.fecha, d.lectura_m3) for d in snap.daily],
             )
         if snap.monthly:
-            any_ok |= import_daily_series(
+            import_daily_series(
                 self.hass,
                 statistic_id=f"{STATS_SOURCE}:monthly_consumption_{slug}",
                 name=f"Veolia {cnum} monthly consumption",
                 unit_of_measurement="m³",
                 daily_values=[(date(m.year, m.month, 1), m.consumo_m3) for m in snap.monthly],
             )
-        if any_ok:
-            cstate["stats_imported_version"] = STATS_IMPORT_VERSION
-            await self._store.async_save(self._persisted)
 
 
 def _apply_daily_derivations(reading, daily: list) -> None:
