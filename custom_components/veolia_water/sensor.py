@@ -30,6 +30,12 @@ class VeoliaSensorDescription(SensorEntityDescription):
     """A sensor description plus a callable that pulls the value from a Snapshot."""
 
     value_fn: Callable[[Snapshot], Any]
+    attrs_fn: Optional[Callable[[Snapshot], dict[str, Any]]] = None
+
+
+def _flow_date_attr(s: Snapshot) -> dict[str, Any]:
+    """Which day the flow figures describe — telemetry runs a couple of days behind."""
+    return {"data_date": serialize(s.flow.latest_date)}
 
 
 SENSORS: tuple[VeoliaSensorDescription, ...] = (
@@ -43,6 +49,9 @@ SENSORS: tuple[VeoliaSensorDescription, ...] = (
         suggested_display_precision=3,
         icon="mdi:counter",
         value_fn=lambda s: s.reading.meter_index_m3,
+        # The per-period history rides on one sensor so it's discoverable
+        # without polluting every entity.
+        attrs_fn=lambda s: {"history": s.history},
     ),
     VeoliaSensorDescription(
         key="consumption_period",
@@ -173,29 +182,32 @@ SENSORS: tuple[VeoliaSensorDescription, ...] = (
     VeoliaSensorDescription(
         key="flow_qmax_today",
         translation_key="flow_qmax_today",
-        name="Peak flow today",
+        name="Peak flow (latest day)",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UNIT_M3H,
         suggested_display_precision=3,
         icon="mdi:waves-arrow-up",
         value_fn=lambda s: s.flow.q_max_today_m3h,
+        attrs_fn=_flow_date_attr,
     ),
     VeoliaSensorDescription(
         key="flow_qmin_today",
         translation_key="flow_qmin_today",
-        name="Min flow today",
+        name="Min flow (latest day)",
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UNIT_M3H,
         suggested_display_precision=3,
         icon="mdi:waves-arrow-right",
         value_fn=lambda s: s.flow.q_min_today_m3h,
+        attrs_fn=_flow_date_attr,
     ),
     VeoliaSensorDescription(
         key="flow_qmax_time_today",
         translation_key="flow_qmax_time_today",
-        name="Peak flow time today",
+        name="Peak flow time (latest day)",
         icon="mdi:clock-time-four-outline",
         value_fn=lambda s: serialize(s.flow.q_max_time_today),
+        attrs_fn=_flow_date_attr,
     ),
     VeoliaSensorDescription(
         key="flow_data_date",
@@ -211,6 +223,7 @@ SENSORS: tuple[VeoliaSensorDescription, ...] = (
         name="Possible leak",
         icon="mdi:water-alert-outline",
         value_fn=lambda s: s.flow.possible_leak,
+        attrs_fn=_flow_date_attr,
     ),
 )
 
@@ -262,14 +275,11 @@ class VeoliaSensor(CoordinatorEntity[VeoliaCoordinator], SensorEntity):
 
     @property
     def extra_state_attributes(self) -> Optional[dict[str, Any]]:
-        # Expose the per-period history on a single sensor so it's discoverable
-        # without polluting every entity. Attaches to meter_index.
-        if self.entity_description.key != "meter_index":
-            return None
+        attrs_fn = self.entity_description.attrs_fn
         snap = self.coordinator.data
-        if snap is None:
+        if attrs_fn is None or snap is None:
             return None
-        return {"history": snap.history}
+        return attrs_fn(snap)
 
     @callback
     def _handle_coordinator_update(self) -> None:

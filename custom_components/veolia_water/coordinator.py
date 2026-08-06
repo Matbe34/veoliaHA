@@ -29,6 +29,7 @@ from .parser import (
     summarize_flow,
 )
 from .portal import DEFAULT_BASE_URL, apply_overrides, profile_for_url
+from .derive import apply_daily_derivations
 from .stats import import_daily_series
 from .veolia_client import (
     CDNBlockedError,
@@ -105,7 +106,7 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
                     invoice.current_period_end_estimate + timedelta(days=5)
                 )
 
-            _apply_daily_derivations(reading, daily)
+            apply_daily_derivations(reading, daily)
 
             return Snapshot(
                 contract=contract,
@@ -218,34 +219,6 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
                 unit_of_measurement="m³",
                 daily_values=[(date(m.year, m.month, 1), m.consumo_m3) for m in snap.monthly],
             )
-
-
-def _apply_daily_derivations(reading, daily: list) -> None:
-    """Refresh meter index + derive today / 7-day / month-to-date metrics."""
-    if not daily:
-        return
-    sorted_daily = sorted(daily, key=lambda x: x.fecha, reverse=True)
-    latest = sorted_daily[0]
-    if latest.lectura_m3 is not None:
-        reading.meter_index_m3 = latest.lectura_m3
-        reading.last_reading_date = latest.fecha
-    if latest.consumo_m3 is not None:
-        reading.latest_daily_consumption_m3 = latest.consumo_m3
-        reading.latest_daily_consumption_l = int(round(latest.consumo_m3 * 1000))
-
-    last7 = [d.consumo_m3 for d in sorted_daily[:7] if d.consumo_m3 is not None]
-    if last7:
-        reading.rolling_7d_avg_l = int(round(sum(last7) / len(last7) * 1000))
-
-    today = datetime.now(timezone.utc).date()
-    mtd = [
-        d.consumo_m3 for d in daily
-        if d.consumo_m3 is not None
-        and d.fecha.year == today.year
-        and d.fecha.month == today.month
-    ]
-    if mtd:
-        reading.month_to_date_m3 = round(sum(mtd), 3)
 
 
 def _slug(contract_number: str) -> str:

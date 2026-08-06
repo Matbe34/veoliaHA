@@ -4,6 +4,35 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [1.2.0] — 2026-08-06
+
+### Added
+- `data_date` attribute on the four flow sensors (peak flow, min flow, peak
+  flow time, possible leak), carrying the day the figures actually describe.
+  The caudales endpoint runs a couple of days behind, so a dashboard that
+  wants to be honest about staleness now has something to show.
+
+### Changed
+- Those sensors are named "(latest day)" rather than "today", which they never
+  were. Entity IDs are unchanged — `unique_id` is built from the description
+  `key`, not the name.
+- Daily derivations moved out of `coordinator.py` into a new `derive` module.
+  The coordinator imports Home Assistant at module level and so can't be unit
+  tested; `derive` is pure Python, like `parser`, `models`, `portal` and
+  `veolia_client`.
+- `extra_state_attributes` now dispatches through an `attrs_fn` on the sensor
+  description, replacing the hardcoded check for the `meter_index` key.
+
+### Fixed
+- Period consumption and period average daily both read 0 on a contract that
+  has never been billed. They come from the portal's `ultimo` block, which
+  describes the last *closed* billing period; with no invoice yet the portal
+  reports nothing there and the parser's zero-defaulting turned that absence
+  into a hard 0. When the portal reports no period at all, the whole daily
+  series is totalled instead — the only span that can honestly be summed. A
+  real period is left alone, including a genuine 0 m³ one, so the fallback
+  stops applying as soon as the first invoice lands.
+
 ## [1.1.2] — 2026-08-06
 
 ### Fixed
