@@ -1,6 +1,7 @@
 """The probe's output gets pasted into public issues — nothing identifying
 may survive `clean()`."""
 import importlib.util
+import logging
 from pathlib import Path
 
 import pytest
@@ -14,8 +15,11 @@ def probe():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     mod._secrets.clear()
+    root = logging.getLogger()
+    saved = (root.handlers[:], root.level)
     yield mod
     mod._secrets.clear()
+    root.handlers, root.level = saved
 
 
 def test_credentials_are_redacted(probe):
@@ -68,6 +72,33 @@ def test_link_scan_does_not_swallow_surrounding_page_text(probe, capsys):
     assert "/group/sgab/mis-consumos" in printed
     for leaked in ("Jane Roe", "CARRER EXEMPLE", "Owner"):
         assert leaked not in printed
+
+
+def test_log_records_are_redacted(probe, capsys):
+    """Reported on issue #3: `parser` logs the contract number of a portal with
+    no `contrato` block, and it reached the user's terminal unscrubbed."""
+    probe.capture_logs()
+    logging.getLogger("custom_components.veolia_water.parser").warning(
+        "inicio page has no `contrato` block for contract %s — address and "
+        "smart-metering flag unknown.", "9999999",
+    )
+    captured = capsys.readouterr()
+    assert "9999999" not in captured.out
+    assert "`contrato` block" in captured.out
+    # Non-empty means the record also took logging's last-resort path to
+    # stderr, which never sees `clean()`.
+    assert captured.err == ""
+
+
+def test_log_records_from_any_library_are_captured(probe, capsys):
+    """aiohttp and asyncio log URLs, and a portal URL carries a query string."""
+    probe.capture_logs()
+    logging.getLogger("aiohttp.client").warning(
+        "retrying https://agbar.veolia.cat/inicio?p_auth=AbC123",
+    )
+    captured = capsys.readouterr()
+    assert "p_auth" not in captured.out
+    assert captured.err == ""
 
 
 def test_every_output_helper_routes_through_clean(probe, capsys):

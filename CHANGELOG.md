@@ -4,6 +4,18 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Security
+- `probe_portal.py` now redacts log records too. Only its own output went
+  through the scrubber; anything the integration logged reached the terminal by
+  way of logging's last-resort handler, and `parser` logs the contract number
+  when a portal serves no `contrato` block — the very portals the probe gets
+  run against. Reported on issue #3, where the contract number had to be edited
+  out by hand. The handler is installed on the root logger, so aiohttp and
+  asyncio are covered as well, and it prints the message alone: a traceback
+  would carry page text past the scrubber.
+
 ## [1.2.0] — 2026-08-06
 
 ### Added

@@ -11,6 +11,7 @@ Usage:
 from __future__ import annotations
 
 import asyncio
+import logging
 import os
 import re
 import sys
@@ -71,6 +72,30 @@ def say(text: str = "") -> None:
 
 def out(label: str, value) -> None:
     say(f"  {label:<28} {value}")
+
+
+class RedactingLogHandler(logging.Handler):
+    """Log records don't go through `say()`, so without a handler of our own
+    they reach the terminal by way of logging's last-resort one — unredacted.
+    `parser` logs the contract number when a block is missing, which is exactly
+    the portal that runs this script.
+    """
+
+    def emit(self, record: logging.LogRecord) -> None:
+        try:
+            say(f"  [{record.levelname.lower()}] {record.getMessage()}")
+        except Exception:  # a malformed log line must not abort the probe
+            self.handleError(record)
+
+
+def capture_logs() -> None:
+    """Route every library's records through `clean()`. Installed on the root
+    logger, so aiohttp and asyncio are covered too, not just the integration.
+    Message only: a traceback would carry page text past the scrubber.
+    """
+    root = logging.getLogger()
+    root.handlers = [RedactingLogHandler()]
+    root.setLevel(logging.WARNING)
 
 
 def describe_blocks(html: str) -> None:
@@ -162,6 +187,7 @@ async def main() -> int:
         print("Set VEOLIA_USER and VEOLIA_PASSWORD in the environment.")
         return 2
     _secrets.extend([user, password, user.split("@")[0]])
+    capture_logs()
 
     profile = profile_for_url(base_url)
     say(f"# Portal probe — {urlsplit(base_url).hostname}\n")
