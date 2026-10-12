@@ -38,6 +38,10 @@ class LoginError(VeoliaError):
     """Authentication was rejected — credentials wrong or portal markup changed."""
 
 
+class UnsupportedPortalError(VeoliaError):
+    """The URL serves no Liferay login page: a different platform entirely."""
+
+
 class CDNBlockedError(VeoliaError):
     """The CDN in front of the portal returned 403 or 429."""
 
@@ -100,12 +104,19 @@ class VeoliaClient:
 
     async def login(self) -> None:
         profile = self._profile
+        # Only a rejected password may raise LoginError: the config flow shows
+        # it as "wrong username or password", which on another platform's
+        # site (issue #9) sends the user off resetting a working password.
         status, _, html = await self._get(f"{self._base_url}{profile.login_path}")
+        if status == 404:
+            raise UnsupportedPortalError(
+                f"{self._base_url} has no {profile.login_path} page (HTTP 404)"
+            )
         if status != 200:
-            raise LoginError(f"Login page returned HTTP {status}")
+            raise VeoliaError(f"Login page returned HTTP {status}")
         p_auth = self.extract_auth_token(html)
         if not p_auth:
-            raise LoginError("Could not find p_auth token on login page")
+            raise UnsupportedPortalError("Could not find p_auth token on login page")
 
         portlet = profile.login_portlet
         action_qs = urlencode({
@@ -133,7 +144,7 @@ class VeoliaClient:
             f"{self._base_url}{profile.login_path}?{action_qs}", form
         )
         if status >= 400:
-            raise LoginError(f"Login POST returned HTTP {status}")
+            raise VeoliaError(f"Login POST returned HTTP {status}")
         if not self._is_authenticated(final_url, body):
             raise LoginError(f"Authentication rejected (landed on {final_url})")
 

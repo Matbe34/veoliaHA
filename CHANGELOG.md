@@ -6,6 +6,18 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Fixed
+- Setup no longer says "Wrong username or password" when the problem is the
+  portal, not the password. Every login failure raised `LoginError`, and the
+  config flow shows that as bad credentials, so a site with no Liferay login
+  page (mel-ileo.fr, issue #9) or a server error sent people off resetting a
+  password that worked. A missing `/login` page or `p_auth` token now raises
+  `UnsupportedPortalError`, shown as an unsupported portal; HTTP errors from
+  the login page or the login POST show as a connection problem. Only a portal
+  that turns the credentials away still reports them as wrong.
+- `probe_portal.py` reports those failures as `FAILED` instead of crashing with
+  a traceback.
+
 ### Security
 - `probe_portal.py` now redacts log records too. Only its own output went
   through the scrubber; anything the integration logged reached the terminal by

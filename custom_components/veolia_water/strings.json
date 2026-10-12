@@ -18,6 +18,7 @@
     },
     "error": {
       "invalid_auth": "Wrong username or password.",
+      "unsupported_portal": "This portal is not supported. Only the Spanish and Catalan Veolia portals work (sorea.veolia.cat, agbar.veolia.cat, hidraqua.veolia.es...), not French ones such as eau.veolia.fr or mel-ileo.fr.",
       "cdn_blocked": "The portal's CDN returned a block (HTTP 403/429). Try again later.",
       "cannot_connect": "Could not reach the portal.",
       "unknown": "Unexpected error. Check the logs."

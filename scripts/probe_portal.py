@@ -213,6 +213,9 @@ async def main() -> int:
         except LoginError as e:
             out("result", f"REJECTED — {e}")
             return 1
+        except VeoliaError as e:
+            out("result", f"FAILED — {e}")
+            return 1
         out("result", "success")
         out("discovered site", client.profile.site or "NOT FOUND")
         out("inicio path", client.profile.inicio_path or "unknown")

@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 
 from custom_components.veolia_water.portal import (
@@ -6,9 +8,15 @@ from custom_components.veolia_water.portal import (
     profile_for_url,
     site_from_url,
 )
-from custom_components.veolia_water.veolia_client import VeoliaClient
+from custom_components.veolia_water.veolia_client import (
+    LoginError,
+    UnsupportedPortalError,
+    VeoliaClient,
+    VeoliaError,
+)
 
 LOGIN_HTML = '<form><input name="_CustomLoginPortlet_password" type="password"></form>'
+LOGIN_PAGE_HTML = "<script>Liferay.authToken = 'abc123';</script>" + LOGIN_HTML
 INICIO_HTML = '<script>var x = {"contrato":{"number":"1"}};</script>'
 
 
@@ -152,3 +160,55 @@ def test_is_authenticated_falls_back_to_absence_of_a_login_form(monkeypatch):
     assert c._is_authenticated("https://x.es/login", LOGIN_HTML) is False
     # A site name that merely starts with "login" is not the login page.
     assert c._is_authenticated("https://x.es/group/loginonline/inicio", INICIO_HTML) is True
+
+
+# ----- login failures --------------------------------------------------------
+# The config flow shows "wrong username or password" for LoginError and nothing
+# else, so only a portal that actually turned the credentials away may raise it.
+def _login_against(monkeypatch, *, get, post=None):
+    """Run login() with the HTTP layer stubbed out."""
+    c = _client()
+
+    async def fake_get(url):
+        return get
+
+    async def fake_post(url, data):
+        return post
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    monkeypatch.setattr(c, "_post", fake_post)
+    monkeypatch.setattr(c, "_has_auth_cookie", lambda: False)
+    asyncio.run(c.login())
+
+
+def test_a_site_with_no_login_page_is_unsupported_not_bad_credentials(monkeypatch):
+    """Issue #9: mel-ileo.fr has no /login, which used to read as a wrong password."""
+    with pytest.raises(UnsupportedPortalError) as exc:
+        _login_against(monkeypatch, get=(404, "https://www.mel-ileo.fr/login", ""))
+    assert not isinstance(exc.value, LoginError)
+
+
+def test_a_login_page_without_a_liferay_token_is_unsupported(monkeypatch):
+    with pytest.raises(UnsupportedPortalError) as exc:
+        _login_against(monkeypatch, get=(200, "https://x.fr/login", "<form></form>"))
+    assert not isinstance(exc.value, LoginError)
+
+
+@pytest.mark.parametrize("get,post", [
+    ((503, "https://x.es/login", ""), None),
+    # A mistyped site override makes the POST redirect to a page that 404s.
+    ((200, "https://x.es/login", LOGIN_PAGE_HTML), (404, "https://x.es/login", "")),
+])
+def test_server_errors_during_login_are_not_bad_credentials(monkeypatch, get, post):
+    with pytest.raises(VeoliaError) as exc:
+        _login_against(monkeypatch, get=get, post=post)
+    assert not isinstance(exc.value, (LoginError, UnsupportedPortalError))
+
+
+def test_a_rejected_password_is_still_a_login_error(monkeypatch):
+    with pytest.raises(LoginError):
+        _login_against(
+            monkeypatch,
+            get=(200, "https://x.es/login", LOGIN_PAGE_HTML),
+            post=(200, "https://x.es/login", LOGIN_HTML),
+        )

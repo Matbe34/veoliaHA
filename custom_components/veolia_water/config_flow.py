@@ -22,6 +22,7 @@ from .portal import DEFAULT_BASE_URL
 from .veolia_client import (
     CDNBlockedError,
     LoginError,
+    UnsupportedPortalError,
     VeoliaClient,
     VeoliaError,
 )
@@ -104,6 +105,8 @@ async def _validate_credentials(username: str, password: str, base_url: str) -> 
             await client.login()
     except LoginError:
         return "invalid_auth"
+    except UnsupportedPortalError:
+        return "unsupported_portal"
     except CDNBlockedError:
         return "cdn_blocked"
     except VeoliaError:
