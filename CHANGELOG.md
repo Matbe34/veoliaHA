@@ -6,6 +6,10 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-12
+
+1.2.0 was never published as a release, so its changes ship here as well.
+
 ### Fixed
 - Setup no longer says "Wrong username or password" when the problem is the
   portal, not the password. Every login failure raised `LoginError`, and the
@@ -17,6 +21,9 @@ All notable changes to this project are documented here. Format follows
   that turns the credentials away still reports them as wrong.
 - `probe_portal.py` reports those failures as `FAILED` instead of crashing with
   a traceback.
+- `manifest.json` no longer lists `aiohttp` as a requirement. Home Assistant
+  ships it, and hassfest rejects a custom integration that declares a core
+  dependency, which had the Validate workflow failing.
 
 ### Security
 - `probe_portal.py` now redacts log records too. Only its own output went
