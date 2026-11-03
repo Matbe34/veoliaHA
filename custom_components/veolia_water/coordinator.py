@@ -87,15 +87,26 @@ class VeoliaCoordinator(DataUpdateCoordinator[Snapshot]):
         async with VeoliaClient(
             self._username, self._password,
             base_url=self._base_url, profile=self._profile,
+            contract=self._contract_filter,
         ) as client:
             await client.login()
             html = await client.fetch_inicio()
             contract, reading, invoice, history = parse_inicio(html)
 
+            # Accounts with several contracts (issue #10): the portal opens on
+            # one of them, so switch to the configured one and reload.
+            if self._contract_filter and contract.contract_number != self._contract_filter:
+                await client.select_contract(self._contract_filter)
+                html = await client.fetch_inicio()
+                contract, reading, invoice, history = parse_inicio(html)
+
+            # Never report one contract's readings under another's number.
             if self._contract_filter and contract.contract_number != self._contract_filter:
                 raise VeoliaError(
-                    f"Configured contract_number={self._contract_filter} but portal shows "
-                    f"{contract.contract_number}. Switch contracts on the portal first."
+                    f"Asked the portal for contract {self._contract_filter} but it "
+                    f"returned contract {contract.contract_number}. Check the number "
+                    "in the integration options; if it is right, please report it on "
+                    "GitHub issue #10."
                 )
 
             caudales, daily, monthly, flow = await self._fetch_smart_meter_data(client, contract.smart_metering)

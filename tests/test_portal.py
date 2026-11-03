@@ -212,3 +212,80 @@ def test_a_rejected_password_is_still_a_login_error(monkeypatch):
             get=(200, "https://x.es/login", LOGIN_PAGE_HTML),
             post=(200, "https://x.es/login", LOGIN_HTML),
         )
+
+
+# ----- contract selection ----------------------------------------------------
+def _login_form(monkeypatch, client):
+    """Log in against a stub portal and return the form the client posted."""
+    posted = {}
+
+    async def fake_get(url):
+        return (200, "https://x.es/login", LOGIN_PAGE_HTML)
+
+    async def fake_post(url, data):
+        posted.update(data)
+        return (200, "https://x.es/group/x/inicio", INICIO_HTML)
+
+    monkeypatch.setattr(client, "_get", fake_get)
+    monkeypatch.setattr(client, "_post", fake_post)
+    monkeypatch.setattr(client, "_has_auth_cookie", lambda: True)
+    asyncio.run(client.login())
+    return posted
+
+
+def test_login_asks_for_the_configured_contract(monkeypatch):
+    """Issue #10: with two contracts the portal opened on the unwanted one."""
+    c = VeoliaClient("u", "p", base_url="https://sorea.veolia.cat", contract=" 123 ")
+    form = _login_form(monkeypatch, c)
+    assert form["_CustomLoginPortlet_lastContract"] == "123"
+
+
+def test_login_without_a_contract_leaves_the_choice_to_the_portal(monkeypatch):
+    c = VeoliaClient("u", "p", base_url="https://sorea.veolia.cat")
+    form = _login_form(monkeypatch, c)
+    assert form["_CustomLoginPortlet_lastContract"] == ""
+
+
+CONTRACTS_PAGE_HTML = "<script>Liferay.authToken = 'tok42';</script>"
+
+
+def _select_against(monkeypatch, *, select_reply, page=(200, "", CONTRACTS_PAGE_HTML)):
+    """Run select_contract("123") with stub pages; return the URLs fetched."""
+    c = VeoliaClient("u", "p", base_url="https://sorea.veolia.cat")
+    urls = []
+
+    async def fake_get(url):
+        urls.append(url)
+        if "seleccionarContrato" in url:
+            return select_reply
+        return (page[0], url, page[2])
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    asyncio.run(c.select_contract("123"))
+    return urls
+
+
+def test_select_contract_uses_the_portal_picker_action(monkeypatch):
+    """Same request as a click in the portal's own contract list."""
+    urls = _select_against(
+        monkeypatch,
+        select_reply=(200, "https://sorea.veolia.cat/group/soreaonline/mis-contratos", ""),
+    )
+    assert urls[0] == "https://sorea.veolia.cat/group/soreaonline/mis-contratos"
+    select = urls[1]
+    assert select.startswith("https://sorea.veolia.cat/group/soreaonline/mis-contratos?")
+    assert "p_p_id=ContractsSelector" in select
+    assert "p_p_lifecycle=1" in select
+    assert "_ContractsSelector_javax.portlet.action=seleccionarContrato" in select
+    assert "p_auth=tok42" in select
+    assert "_ContractsSelector_numeroContrato=123" in select
+
+
+def test_select_contract_fails_loudly_on_an_http_error(monkeypatch):
+    with pytest.raises(VeoliaError):
+        _select_against(monkeypatch, select_reply=(500, "https://sorea.veolia.cat/x", ""))
+
+
+def test_select_contract_needs_a_token(monkeypatch):
+    with pytest.raises(VeoliaError):
+        _select_against(monkeypatch, select_reply=None, page=(200, "", "<html></html>"))

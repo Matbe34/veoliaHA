@@ -67,10 +67,13 @@ class VeoliaClient:
         *,
         base_url: str = DEFAULT_BASE_URL,
         profile: Optional[PortalProfile] = None,
+        contract: Optional[str] = None,
         timeout: float = 30.0,
     ) -> None:
         self._username = username
         self._password = password
+        # Sent as the login form's `lastContract`. Blank lets the portal pick.
+        self._contract = (contract or "").strip()
         self._base_url = base_url.rstrip("/")
         self._profile = profile or profile_for_url(self._base_url)
         self._timeout = aiohttp.ClientTimeout(total=timeout)
@@ -131,7 +134,9 @@ class VeoliaClient:
         form = {
             f"_{portlet}_login": self._username,
             f"_{portlet}_password": self._password,
-            f"_{portlet}_lastContract": "",
+            # Only a hint: the portal may ignore it, so the coordinator also
+            # calls select_contract() when the wrong contract comes back.
+            f"_{portlet}_lastContract": self._contract,
             "doActionAfterLogin": "false",
             "saveLastPath": "false",
             "idiomasExcluidosId": "",
@@ -187,6 +192,35 @@ class VeoliaClient:
                 "integration options."
             )
         return await self._fetch_page(path, "Inicio")
+
+    async def select_contract(self, number: str) -> None:
+        """Make `number` the session's contract, as the portal's own picker does.
+
+        The portal serves one contract at a time. Its contract list links each
+        row to this `seleccionarContrato` action; every page fetched afterwards
+        shows the chosen contract.
+        """
+        path = self._profile.contracts_path
+        if path is None:
+            raise VeoliaError(f"Don't know the contracts path for {self._base_url}")
+        p_auth = self.extract_auth_token(await self._fetch_page(path, "Contracts"))
+        if not p_auth:
+            raise VeoliaError("No p_auth token on the contracts page")
+        portlet = self._profile.contracts_portlet
+        qs = urlencode({
+            "p_p_id": portlet,
+            "p_p_lifecycle": "1",
+            "p_p_state": "normal",
+            "p_p_mode": "view",
+            f"_{portlet}_javax.portlet.action": "seleccionarContrato",
+            "p_auth": p_auth,
+            f"_{portlet}_numeroContrato": number,
+        })
+        status, final_url, html = await self._get(f"{self._base_url}{path}?{qs}")
+        if status != 200:
+            raise VeoliaError(f"Selecting a contract returned HTTP {status}")
+        if self._bounced_to_login(final_url, html):
+            raise SessionExpiredError("Selecting a contract redirected back to login")
 
     async def fetch_consumos_page(self) -> str:
         """Fetch the consumption page to scrape a fresh `p_auth` token."""

@@ -48,6 +48,7 @@ class VeoliaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 user_input[CONF_USERNAME],
                 user_input[CONF_PASSWORD],
                 user_input.get(CONF_PORTAL_URL) or DEFAULT_BASE_URL,
+                user_input.get(CONF_CONTRACT_NUMBER),
             )
             if error is None:
                 await self.async_set_unique_id(user_input[CONF_USERNAME].lower())
@@ -98,10 +99,15 @@ class VeoliaOptionsFlow(config_entries.OptionsFlow):
         return self.async_show_form(step_id="init", data_schema=schema)
 
 
-async def _validate_credentials(username: str, password: str, base_url: str) -> Optional[str]:
+async def _validate_credentials(
+    username: str, password: str, base_url: str, contract: Optional[str] = None,
+) -> Optional[str]:
     """Return None on success, otherwise an error key for the form."""
     try:
-        async with VeoliaClient(username, password, base_url=base_url) as client:
+        # Log in exactly as the coordinator will, contract included.
+        async with VeoliaClient(
+            username, password, base_url=base_url, contract=contract,
+        ) as client:
             await client.login()
     except LoginError:
         return "invalid_auth"

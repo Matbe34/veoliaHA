@@ -31,8 +31,10 @@ class PortalProfile:
     login_path: str = "/login"
     inicio_slug: str = "inicio"
     consumos_slug: str = "mis-consumos"
+    contracts_slug: str = "mis-contratos"
     login_portlet: str = "CustomLoginPortlet"
     consumos_portlet: str = "MisConsumos"
+    contracts_portlet: str = "ContractsSelector"
     accept_language: str = "es,ca;q=0.9,en;q=0.8"
 
     def with_site(self, site: Optional[str]) -> "PortalProfile":
@@ -49,6 +51,10 @@ class PortalProfile:
     @property
     def consumos_path(self) -> Optional[str]:
         return self.page_path(self.consumos_slug)
+
+    @property
+    def contracts_path(self) -> Optional[str]:
+        return self.page_path(self.contracts_slug)
 
 
 PROFILES: tuple[PortalProfile, ...] = (

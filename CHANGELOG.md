@@ -6,6 +6,17 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Fixed
+- The contract number option now switches the portal to that contract. It
+  used to be only a check: an account with several contracts (issue #10) got
+  whichever one the portal opened on, and setting the number of the other one
+  just turned that into an error. When the portal opens on a different
+  contract, the integration now sends the same `seleccionarContrato` request
+  as the portal's own contract list, then reloads. The number also goes in
+  the login form's `lastContract` field, which was always left empty. If the
+  portal still returns a different contract, the error says so plainly
+  instead of suggesting a switch on the portal, which does not help.
+
 ## [1.2.1] - 2026-10-12
 
 1.2.0 was never published as a release, so its changes ship here as well.

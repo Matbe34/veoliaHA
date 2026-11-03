@@ -12,7 +12,7 @@
         },
         "data_description": {
           "portal_url": "Override the portal base URL. Leave as default for Veolia Catalonia.",
-          "contract_number": "Restrict to a specific contract. Leave empty to use whichever the portal returns."
+          "contract_number": "Only needed if your account has several contracts: the number of the one to read. Leave empty to use whichever the portal opens on."
         }
       }
     },
@@ -37,6 +37,7 @@
           "portal_site": "Portal site name (advanced)"
         },
         "data_description": {
+          "contract_number": "Only needed if your account has several contracts: the number of the one to read. Leave empty to use whichever the portal opens on.",
           "portal_site": "Liferay site name in the portal URL, e.g. `soreaonline` in /group/soreaonline/inicio. Leave empty to detect it automatically."
         }
       }
