@@ -79,8 +79,7 @@ def test_log_records_are_redacted(probe, capsys):
     no `contrato` block, and it reached the user's terminal unscrubbed."""
     probe.capture_logs()
     logging.getLogger("custom_components.veolia_water.parser").warning(
-        "inicio page has no `contrato` block for contract %s — address and "
-        "smart-metering flag unknown.", "9999999",
+        "inicio page has no `contrato` block for contract %s", "9999999",
     )
     captured = capsys.readouterr()
     assert "9999999" not in captured.out

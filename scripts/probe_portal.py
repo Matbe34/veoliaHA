@@ -76,7 +76,7 @@ def out(label: str, value) -> None:
 
 class RedactingLogHandler(logging.Handler):
     """Log records don't go through `say()`, so without a handler of our own
-    they reach the terminal by way of logging's last-resort one — unredacted.
+    they reach the terminal unredacted, by way of logging's last-resort one.
     `parser` logs the contract number when a block is missing, which is exactly
     the portal that runs this script.
     """
