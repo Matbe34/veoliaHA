@@ -6,6 +6,8 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-11-03
+
 ### Fixed
 - The contract number option now switches the portal to that contract. It
   used to be only a check: an account with several contracts (issue #10) got
