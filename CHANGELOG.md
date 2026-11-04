@@ -6,6 +6,8 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-04
+
 ### Added
 - Several contracts per account (issue #10). After login, setup lists the
   account's contracts and you tick the ones to add; each gets its own device
