@@ -404,7 +404,27 @@ def _build_contract(blob: dict, factura: Optional[dict] = None) -> Contract:
         smart_metering=bool(smart) if smart is not None else None,
         point_of_service_id=_strip(blob.get("pointOfServiceId")),
         last_invoice_status_code=_strip(blob.get("lastInvoiceStatus")),
+        alias=_strip(blob.get("alias")),
     )
+
+
+def parse_contract_list(payload: Any) -> tuple[list[Contract], int]:
+    """One page of the portal's contract list (`loadContratos`).
+
+    Returns the contracts on this page and the account's total. Rows use the
+    same keys as the `contrato` block, so they share its builder.
+    """
+    if not isinstance(payload, dict):
+        raise ParseError("contract list is not a JSON object")
+    rows = payload.get("contractToShow")
+    if not isinstance(rows, list):
+        raise ParseError("contract list has no `contractToShow` array")
+    contracts = [
+        c for c in (_build_contract(row) for row in rows if isinstance(row, dict))
+        if c.contract_number
+    ]
+    total = parse_int(payload.get("totalContracts"))
+    return contracts, total if total is not None else len(contracts)
 
 
 def _build_reading(contract_number: str, ultimo: dict) -> Reading:

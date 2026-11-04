@@ -7,12 +7,17 @@
         "data": {
           "username": "Username",
           "password": "Password",
-          "portal_url": "Portal URL",
-          "contract_number": "Contract number (optional)"
+          "portal_url": "Portal URL"
         },
         "data_description": {
-          "portal_url": "Override the portal base URL. Leave as default for Veolia Catalonia.",
-          "contract_number": "Only needed if your account has several contracts: the number of the one to read. Leave empty to use whichever the portal opens on."
+          "portal_url": "Override the portal base URL. Leave as default for Veolia Catalonia."
+        }
+      },
+      "contracts": {
+        "title": "Choose contracts",
+        "description": "Your account has several contracts. Tick the ones to add: each gets its own device.",
+        "data": {
+          "contracts": "Contracts"
         }
       }
     },
@@ -21,7 +26,8 @@
       "unsupported_portal": "This portal is not supported. Only the Spanish and Catalan Veolia portals work (sorea.veolia.cat, agbar.veolia.cat, hidraqua.veolia.es...), not French ones such as eau.veolia.fr or mel-ileo.fr.",
       "cdn_blocked": "The portal's CDN returned a block (HTTP 403/429). Try again later.",
       "cannot_connect": "Could not reach the portal.",
-      "unknown": "Unexpected error. Check the logs."
+      "unknown": "Unexpected error. Check the logs.",
+      "no_contracts_selected": "Tick at least one contract."
     },
     "abort": {
       "already_configured": "This account is already configured."
@@ -33,15 +39,19 @@
         "title": "Veolia Water options",
         "data": {
           "scan_interval_hours": "Poll interval (hours)",
-          "contract_number": "Contract number (optional)",
+          "contracts": "Contracts",
           "portal_site": "Portal site name (advanced)"
         },
         "data_description": {
           "scan_interval_hours": "How often to poll the portal. 6 h matches the smart meter's daily upload cadence.",
-          "contract_number": "Only needed if your account has several contracts: the number of the one to read. Leave empty to use whichever the portal opens on.",
+          "contracts": "Each ticked contract gets its own device. Unticking one removes its device; its imported history stays.",
           "portal_site": "Liferay site name in the portal URL, e.g. `soreaonline` in /group/soreaonline/inicio. Leave empty to detect it automatically."
         }
       }
+    },
+    "error": {
+      "no_contracts_selected": "Tick at least one contract.",
+      "cannot_list_contracts": "Couldn't load your contracts from the portal, so the contract selection stays as it is."
     }
   },
   "entity": {

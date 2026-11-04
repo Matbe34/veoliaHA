@@ -234,11 +234,18 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: VeoliaCoordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities(VeoliaSensor(coordinator, entry, desc) for desc in SENSORS)
+    # Configured contracts get entities even if this cycle failed to read them,
+    # so a portal hiccup at startup doesn't make them vanish.
+    numbers = coordinator.contracts or list(coordinator.data or {})
+    async_add_entities(
+        VeoliaSensor(coordinator, number, desc)
+        for number in numbers
+        for desc in SENSORS
+    )
 
 
 class VeoliaSensor(CoordinatorEntity[VeoliaCoordinator], SensorEntity):
-    """Entity backed by the coordinator's Snapshot."""
+    """Entity backed by one contract's Snapshot in the coordinator."""
 
     entity_description: VeoliaSensorDescription
     _attr_has_entity_name = True
@@ -246,16 +253,15 @@ class VeoliaSensor(CoordinatorEntity[VeoliaCoordinator], SensorEntity):
     def __init__(
         self,
         coordinator: VeoliaCoordinator,
-        entry: ConfigEntry,
+        contract_number: str,
         description: VeoliaSensorDescription,
     ) -> None:
         super().__init__(coordinator)
         self.entity_description = description
-        contract_number = (coordinator.data.contract.contract_number
-                           if coordinator.data else entry.entry_id)
+        self._contract_number = contract_number
         self._attr_unique_id = f"{contract_number}_{description.key}"
 
-        snap = coordinator.data
+        snap = self._snapshot
         contract = snap.contract if snap else None
         device_name = f"Veolia Water — {contract.address}" if (contract and contract.address) else f"Veolia Water — {contract_number}"
         self._attr_device_info = DeviceInfo(
@@ -267,8 +273,16 @@ class VeoliaSensor(CoordinatorEntity[VeoliaCoordinator], SensorEntity):
         )
 
     @property
+    def _snapshot(self) -> Optional[Snapshot]:
+        return (self.coordinator.data or {}).get(self._contract_number)
+
+    @property
+    def available(self) -> bool:
+        return super().available and self._snapshot is not None
+
+    @property
     def native_value(self) -> Optional[Any]:
-        snap = self.coordinator.data
+        snap = self._snapshot
         if snap is None:
             return None
         return self.entity_description.value_fn(snap)
@@ -276,7 +290,7 @@ class VeoliaSensor(CoordinatorEntity[VeoliaCoordinator], SensorEntity):
     @property
     def extra_state_attributes(self) -> Optional[dict[str, Any]]:
         attrs_fn = self.entity_description.attrs_fn
-        snap = self.coordinator.data
+        snap = self._snapshot
         if attrs_fn is None or snap is None:
             return None
         return attrs_fn(snap)

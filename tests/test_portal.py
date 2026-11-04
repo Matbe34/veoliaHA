@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 import pytest
 
@@ -289,3 +290,49 @@ def test_select_contract_fails_loudly_on_an_http_error(monkeypatch):
 def test_select_contract_needs_a_token(monkeypatch):
     with pytest.raises(VeoliaError):
         _select_against(monkeypatch, select_reply=None, page=(200, "", "<html></html>"))
+
+
+# ----- contract list -----------------------------------------------------------
+def _contract_rows(*numbers):
+    return [{"number": n, "alias": "", "supplyAddress": f"Street {n}", "smartMetering": True}
+            for n in numbers]
+
+
+def test_list_contracts_pages_through_the_portal_picker(monkeypatch):
+    c = VeoliaClient("u", "p", base_url="https://sorea.veolia.cat")
+    pages = iter([
+        {"totalContracts": 3, "contractToShow": _contract_rows("1", "2")},
+        {"totalContracts": 3, "contractToShow": _contract_rows("3")},
+    ])
+    urls = []
+
+    async def fake_get(url):
+        urls.append(url)
+        if "loadContratos" in url:
+            return (200, url, json.dumps(next(pages)))
+        return (200, url, CONTRACTS_PAGE_HTML)
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    contracts = asyncio.run(c.list_contracts(page_size=2))
+
+    assert [x.contract_number for x in contracts] == ["1", "2", "3"]
+    assert contracts[0].address == "Street 1" and contracts[0].smart_metering is True
+    lists = [u for u in urls if "loadContratos" in u]
+    assert len(lists) == 2
+    assert "p_p_lifecycle=2" in lists[0] and "p_auth=tok42" in lists[0]
+    assert "_ContractsSelector_offset=0" in lists[0]
+    assert "_ContractsSelector_offset=2" in lists[1]
+    assert "_ContractsSelector_limit=2" in lists[1]
+
+
+def test_an_unreadable_contract_list_is_a_portal_error(monkeypatch):
+    c = VeoliaClient("u", "p", base_url="https://sorea.veolia.cat")
+
+    async def fake_get(url):
+        if "loadContratos" in url:
+            return (200, url, "<html>not json</html>")
+        return (200, url, CONTRACTS_PAGE_HTML)
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    with pytest.raises(VeoliaError):
+        asyncio.run(c.list_contracts())

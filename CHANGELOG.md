@@ -6,6 +6,22 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Added
+- Several contracts per account (issue #10). After login, setup lists the
+  account's contracts and you tick the ones to add; each gets its own device
+  and sensors. One login per poll reads them all, switching between them the
+  way the portal's own contract list does, and a contract that can't be read
+  only takes its own sensors offline. The options screen shows the same list,
+  fetched live, so contracts can be added or removed later. Removing one
+  deletes its device; its imported history stays in the recorder.
+
+### Changed
+- The free-text contract number field is gone from setup and options, replaced
+  by the contract list. Entries that already have a number keep reading that
+  contract until the selection is changed in the options. Entries without one
+  keep reading whichever contract the portal opens on, with the same entity
+  IDs as before.
+
 ## [1.2.2] - 2026-11-03
 
 ### Fixed

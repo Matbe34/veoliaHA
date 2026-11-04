@@ -13,6 +13,13 @@ class Contract:
     smart_metering: Optional[bool] = None  # None = portal didn't say
     point_of_service_id: Optional[str] = None
     last_invoice_status_code: Optional[str] = None
+    alias: Optional[str] = None  # the name the customer gave it on the portal
+
+    @property
+    def label(self) -> str:
+        """How the contract picker shows it: alias or address, then the number."""
+        name = self.alias or self.address
+        return f"{name} ({self.contract_number})" if name else self.contract_number
 
 
 @dataclass

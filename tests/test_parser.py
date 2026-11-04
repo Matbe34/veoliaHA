@@ -7,6 +7,7 @@ from custom_components.veolia_water.parser import (
     ParseError,
     extract_json_block,
     parse_caudales_response,
+    parse_contract_list,
     parse_daily_response,
     parse_date,
     parse_date_spanish,
@@ -403,3 +404,36 @@ def test_parse_monthly_response_handles_garbage():
     assert parse_monthly_response({"consumos": ["junk"]}) == []
     assert parse_monthly_response({}) == []
     assert parse_monthly_response("nope") == []
+
+
+# ----- contract list (loadContratos) ------------------------------------------
+def test_parse_contract_list_reads_each_row_like_a_contrato_block():
+    payload = {
+        "totalContracts": 2,
+        "contractToShow": [
+            {"number": "111", "alias": "Casa", "supplyAddress": " C/ Major 1 ",
+             "smartMetering": True, "pointOfServiceId": "PS1"},
+            {"number": "222", "alias": "", "supplyAddress": "Av. Mar 2", "smartMetering": False},
+            {"number": "", "supplyAddress": "no number, skipped"},
+        ],
+    }
+    contracts, total = parse_contract_list(payload)
+    assert total == 2
+    assert [c.contract_number for c in contracts] == ["111", "222"]
+    assert contracts[0].alias == "Casa" and contracts[0].address == "C/ Major 1"
+    assert contracts[1].smart_metering is False
+
+
+def test_contract_labels_prefer_the_alias_then_the_address():
+    contracts, _ = parse_contract_list({"contractToShow": [
+        {"number": "111", "alias": "Casa", "supplyAddress": "C/ Major 1"},
+        {"number": "222", "supplyAddress": "Av. Mar 2"},
+        {"number": "333"},
+    ]})
+    assert [c.label for c in contracts] == ["Casa (111)", "Av. Mar 2 (222)", "333"]
+
+
+@pytest.mark.parametrize("payload", [None, [], {"totalContracts": 1}])
+def test_parse_contract_list_rejects_other_shapes(payload):
+    with pytest.raises(ParseError):
+        parse_contract_list(payload)

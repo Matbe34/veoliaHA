@@ -19,7 +19,8 @@ portal base URL and try it. If the landing page can't be found, run
 2. Add `https://github.com/Matbe34/veoliaHA` with category **Integration**.
 3. Install **Veolia Water** from the HACS list, then **restart Home Assistant**.
 4. **Settings → Devices & Services → Add Integration → Veolia Water**.
-5. Enter your portal username and password.
+5. Enter your portal username and password. If your account has several
+   contracts, tick the ones to add.
 
 ## Sensors
 
@@ -43,6 +44,18 @@ One HA device per contract with these entities:
 - `flow_qmax_today` / `flow_qmin_today` (m³/h), `flow_qmax_time_today`.
 - `flow_data_date` — most recent telemetry date.
 - `possible_leak` — `true` when today's `qmin > 0` (no overnight quiet period).
+
+## Several contracts
+
+If your account has more than one contract, setup lists them after login
+and you tick the ones to add. Each one gets its own device with the full set
+of sensors and its own history. Change the selection later under
+**Configure**: unticking a contract removes its device but keeps its imported
+history.
+
+Each poll logs in once and reads the contracts one after another, switching
+between them the same way the portal's own contract list does. If one can't
+be read, only its sensors go unavailable.
 
 ## Long-term statistics
 

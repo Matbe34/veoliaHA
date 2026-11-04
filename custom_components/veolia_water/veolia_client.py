@@ -14,6 +14,8 @@ from urllib.parse import urlencode, urlsplit
 
 import aiohttp
 
+from .models import Contract
+from .parser import ParseError, parse_contract_list
 from .portal import (
     DEFAULT_BASE_URL,
     PortalProfile,
@@ -49,6 +51,9 @@ class CDNBlockedError(VeoliaError):
 class SessionExpiredError(VeoliaError):
     """A request landed back on /login mid-cycle."""
 
+
+# Safety stop for the contract list's paging loop.
+_MAX_CONTRACT_PAGES = 20
 
 _AUTH_TOKEN_RE = re.compile(
     r"""(?:Liferay\.authToken\s*=\s*['"](?P<a>[A-Za-z0-9]+)['"]|p_auth=(?P<b>[A-Za-z0-9]+))"""
@@ -193,6 +198,54 @@ class VeoliaClient:
             )
         return await self._fetch_page(path, "Inicio")
 
+    async def _contracts_page(self) -> tuple[str, str]:
+        """Path of the contracts page and the `p_auth` token it carries."""
+        path = self._profile.contracts_path
+        if path is None:
+            raise VeoliaError(f"Don't know the contracts path for {self._base_url}")
+        p_auth = self.extract_auth_token(await self._fetch_page(path, "Contracts"))
+        if not p_auth:
+            raise VeoliaError("No p_auth token on the contracts page")
+        return path, p_auth
+
+    async def list_contracts(self, page_size: int = 50) -> list[Contract]:
+        """Every contract on the account, from the portal's contract picker.
+
+        The picker loads them a page at a time (`loadContratos`), so keep
+        asking until the account's total is reached.
+        """
+        path, p_auth = await self._contracts_page()
+        ns = f"_{self._profile.contracts_portlet}_"
+        contracts: list[Contract] = []
+        for _ in range(_MAX_CONTRACT_PAGES):
+            qs = urlencode({
+                "p_p_id": self._profile.contracts_portlet,
+                "p_p_lifecycle": "2",
+                "p_p_state": "normal",
+                "p_p_mode": "view",
+                "p_p_cacheability": "cacheLevelPage",
+                f"{ns}op": "loadContratos",
+                f"{ns}offset": str(len(contracts)),
+                f"{ns}limit": str(page_size),
+                f"{ns}contractNumber": "",
+                f"{ns}identityDocument": "",
+                f"{ns}supplyAddress": "",
+                "p_auth": p_auth,
+            })
+            status, final_url, body = await self._get(f"{self._base_url}{path}?{qs}")
+            if status != 200:
+                raise VeoliaError(f"Contract list returned HTTP {status}")
+            if self._bounced_to_login(final_url, body):
+                raise SessionExpiredError("Contract list redirected back to login")
+            try:
+                page, total = parse_contract_list(json.loads(body))
+            except (json.JSONDecodeError, ParseError) as e:
+                raise VeoliaError(f"Unreadable contract list: {e}") from e
+            contracts.extend(page)
+            if not page or len(contracts) >= total:
+                break
+        return contracts
+
     async def select_contract(self, number: str) -> None:
         """Make `number` the session's contract, as the portal's own picker does.
 
@@ -200,12 +253,7 @@ class VeoliaClient:
         row to this `seleccionarContrato` action; every page fetched afterwards
         shows the chosen contract.
         """
-        path = self._profile.contracts_path
-        if path is None:
-            raise VeoliaError(f"Don't know the contracts path for {self._base_url}")
-        p_auth = self.extract_auth_token(await self._fetch_page(path, "Contracts"))
-        if not p_auth:
-            raise VeoliaError("No p_auth token on the contracts page")
+        path, p_auth = await self._contracts_page()
         portlet = self._profile.contracts_portlet
         qs = urlencode({
             "p_p_id": portlet,
