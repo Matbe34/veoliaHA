@@ -10,7 +10,9 @@ import logging
 from datetime import date, datetime, time, timezone
 from typing import Iterable, Optional
 
+from homeassistant.components.recorder.models import StatisticMeanType
 from homeassistant.components.recorder.statistics import (
+    STATISTIC_UNIT_TO_UNIT_CONVERTER,
     StatisticData,
     StatisticMetaData,
     async_add_external_statistics,
@@ -56,12 +58,16 @@ def import_daily_series(
             entry["max"] = v
         stats.append(entry)
 
+    converter = STATISTIC_UNIT_TO_UNIT_CONVERTER.get(unit_of_measurement)
     metadata: StatisticMetaData = {
-        "has_mean": not has_sum,
         "has_sum": has_sum,
+        "mean_type": (
+            StatisticMeanType.NONE if has_sum else StatisticMeanType.ARITHMETIC
+        ),
         "name": name,
         "source": STATS_SOURCE,
         "statistic_id": statistic_id,
+        "unit_class": converter.UNIT_CLASS if converter else None,
         "unit_of_measurement": unit_of_measurement,
     }
     async_add_external_statistics(hass, metadata, stats)
