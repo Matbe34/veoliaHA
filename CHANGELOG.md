@@ -6,6 +6,17 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-11-17
+
+### Fixed
+- Imported statistics now set `mean_type` and `unit_class`, so Home Assistant
+  no longer logs a deprecation warning for them, and imports keep working once
+  Home Assistant requires both fields (#11, thanks @gjohansson-ST).
+
+### Changed
+- Requires Home Assistant 2025.11.0 or newer. Older versions can't store
+  statistics with `unit_class`.
+
 ## [1.3.0] - 2026-11-04
 
 ### Added
