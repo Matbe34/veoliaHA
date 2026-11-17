@@ -52,7 +52,7 @@ def import_daily_series(
             running_sum += v
             entry["sum"] = round(running_sum, 6)
         else:
-            # statistics-graph reads mean/min/max for has_mean=True series.
+            # statistics-graph reads mean/min/max for mean_type=ARITHMETIC series.
             entry["mean"] = v
             entry["min"] = v
             entry["max"] = v
