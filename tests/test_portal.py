@@ -215,6 +215,46 @@ def test_a_rejected_password_is_still_a_login_error(monkeypatch):
         )
 
 
+def test_a_login_bounced_to_the_login_page_is_retried(monkeypatch):
+    """Viaqua answers the first valid login with /login and a cookie set."""
+    c = _client()
+    posts = iter([
+        (200, "https://x.es/login", LOGIN_PAGE_HTML),
+        (200, "https://x.es/group/x/inicio", INICIO_HTML),
+    ])
+
+    async def fake_get(url):
+        return (200, "https://x.es/login", LOGIN_PAGE_HTML)
+
+    async def fake_post(url, data):
+        return next(posts)
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    monkeypatch.setattr(c, "_post", fake_post)
+    monkeypatch.setattr(c, "_has_auth_cookie", lambda: True)
+    monkeypatch.setattr("custom_components.veolia_water.veolia_client.LOGIN_RETRY_DELAY", 0)
+    asyncio.run(c.login())
+    assert c.profile.site == "x"
+
+
+def test_a_login_that_keeps_bouncing_gives_up_without_blaming_the_password(monkeypatch):
+    c = _client()
+
+    async def fake_get(url):
+        return (200, "https://x.es/login", LOGIN_PAGE_HTML)
+
+    async def fake_post(url, data):
+        return (200, "https://x.es/login", LOGIN_PAGE_HTML)
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    monkeypatch.setattr(c, "_post", fake_post)
+    monkeypatch.setattr(c, "_has_auth_cookie", lambda: True)
+    monkeypatch.setattr("custom_components.veolia_water.veolia_client.LOGIN_RETRY_DELAY", 0)
+    with pytest.raises(VeoliaError) as exc:
+        asyncio.run(c.login())
+    assert not isinstance(exc.value, LoginError)
+
+
 # ----- contract selection ----------------------------------------------------
 def _login_form(monkeypatch, client):
     """Log in against a stub portal and return the form the client posted."""

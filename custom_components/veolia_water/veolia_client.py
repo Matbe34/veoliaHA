@@ -6,14 +6,17 @@ shared/leaky state.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
+from datetime import date, timedelta
 from typing import Optional
 from urllib.parse import urlencode, urlsplit
 
 import aiohttp
 
+from .const import CONSUMOS_PAGE_SIZE, DAILY_WINDOW_DAYS, HOURLY_WINDOW_DAYS
 from .models import Contract
 from .parser import ParseError, parse_contract_list
 from .portal import (
@@ -30,6 +33,9 @@ _LOGGER = logging.getLogger(__name__)
 _AUTH_COOKIES = ("ID", "COMPANY_ID", "USER_UUID", "LFR_SESSION_STATE")
 
 _LOGIN_FORM_RE = re.compile(r"""<input[^>]+type=['"]password['"]""", re.I)
+
+LOGIN_ATTEMPTS = 5
+LOGIN_RETRY_DELAY = 3.0
 
 
 class VeoliaError(Exception):
@@ -111,6 +117,24 @@ class VeoliaClient:
         return m.group("a") or m.group("b")
 
     async def login(self) -> None:
+        # The portal sometimes answers a valid login with the login page again
+        # (a session cookie is set but nothing is authorised). A fresh attempt
+        # works, so retry before giving up. Never retry a rejected password.
+        for attempt in range(1, LOGIN_ATTEMPTS + 1):
+            if await self._login_once():
+                return
+            _LOGGER.debug("Login bounced back to the login page (attempt %d)", attempt)
+            if attempt < LOGIN_ATTEMPTS:
+                if self._session is not None:
+                    self._session.cookie_jar.clear()
+                await asyncio.sleep(LOGIN_RETRY_DELAY)
+        raise VeoliaError(
+            f"{self._base_url} kept returning the login page after "
+            f"{LOGIN_ATTEMPTS} attempts; try again later"
+        )
+
+    async def _login_once(self) -> bool:
+        """One login try; False if the portal bounced us back to the login page."""
         profile = self._profile
         # Only a rejected password may raise LoginError: the config flow shows
         # it as "wrong username or password", which on another platform's
@@ -157,6 +181,8 @@ class VeoliaClient:
             raise VeoliaError(f"Login POST returned HTTP {status}")
         if not self._is_authenticated(final_url, body):
             raise LoginError(f"Authentication rejected (landed on {final_url})")
+        if self._is_login_url(final_url):
+            return False
 
         self._landing_html = body
         learned = site_from_url(final_url)
@@ -164,6 +190,7 @@ class VeoliaClient:
             _LOGGER.debug("Learned Liferay site '%s' from %s", learned, final_url)
             self._profile = profile.with_site(learned)
         _LOGGER.info("Authenticated against %s", self._base_url)
+        return True
 
     def _is_authenticated(self, final_url: str, html: str) -> bool:
         """Did the login POST work? Cookie first, login-form fallback."""
@@ -299,6 +326,68 @@ class VeoliaClient:
         return await self._call_consumos_op(
             op, p_auth, fecha_inicio, fecha_fin, inicio, fin, method="GET",
         )
+
+    async def fetch_consumos_range(
+        self, p_auth: str, fecha_inicio: date, fecha_fin: date, *, tipo: str,
+    ) -> dict:
+        """Every row of `fecha_inicio..fecha_fin` for `tipo` (`horaria`/`diaria`/`mensual`).
+
+        The portal caps a query at ~1000 rows and returns nothing for windows
+        that are too long, so the range is cut into windows (walked newest to
+        oldest) and each one is paged. Stops after two empty windows in a row,
+        i.e. before the meter existed. Returns the same shape as one response
+        (`{"consumos": [...]}`, newest first).
+
+        A window that fails after some rows were already read ends the walk
+        with what we have rather than discarding it.
+        """
+        window = HOURLY_WINDOW_DAYS if tipo == "horaria" else DAILY_WINDOW_DAYS
+        consumos: list = []
+        end = fecha_fin
+        empty_in_a_row = 0
+        while end >= fecha_inicio and empty_in_a_row < 2:
+            start = max(fecha_inicio, end - timedelta(days=window - 1))
+            try:
+                rows = await self._fetch_window(p_auth, start, end, tipo)
+            except (SessionExpiredError, CDNBlockedError):
+                raise
+            except VeoliaError as e:
+                if not consumos:
+                    raise
+                _LOGGER.warning("%s %s..%s failed (%s); keeping what was read.", tipo, start, end, e)
+                break
+            empty_in_a_row = 0 if rows else empty_in_a_row + 1
+            consumos.extend(rows)
+            end = start - timedelta(days=1)
+        return {"consumos": consumos}
+
+    async def _fetch_window(self, p_auth: str, start: date, end: date, tipo: str) -> list:
+        rows: list = []
+        first = 0
+        while True:
+            payload = await self._fetch_page_retrying(p_auth, start, end, tipo, first)
+            page = payload.get("consumos") or [] if isinstance(payload, dict) else []
+            rows.extend(page)
+            if not page or payload.get("ultimaPagina", True):
+                return rows
+            first += CONSUMOS_PAGE_SIZE
+
+    async def _fetch_page_retrying(self, p_auth, start, end, tipo, first) -> dict:
+        """One page, retrying the portal's transient 5xx (it throws 504s now and then)."""
+        for attempt in (1, 2, 3):
+            try:
+                # `fin` is inclusive.
+                return await self.fetch_buscar_consumos(
+                    p_auth, start, end, tipo=tipo,
+                    inicio=first, fin=first + CONSUMOS_PAGE_SIZE - 1,
+                )
+            except (SessionExpiredError, CDNBlockedError):
+                raise
+            except VeoliaError as e:
+                if attempt == 3 or " returned HTTP 5" not in str(e):
+                    raise
+                await asyncio.sleep(2 * attempt)
+        raise AssertionError("unreachable")
 
     async def probe_login_page(self) -> Optional[str]:
         """Return the p_auth token from /login, or None if blocked/missing.

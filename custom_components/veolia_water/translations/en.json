@@ -43,6 +43,7 @@
           "portal_site": "Portal site name (advanced)"
         },
         "data_description": {
+          "scan_interval_hours": "How often to poll the portal. 6 h matches the smart meter's daily upload cadence.",
           "contracts": "Each ticked contract gets its own device. Unticking one removes its device; its imported history stays.",
           "portal_site": "Liferay site name in the portal URL, e.g. `soreaonline` in /group/soreaonline/inicio. Leave empty to detect it automatically."
         }
@@ -51,6 +52,33 @@
     "error": {
       "no_contracts_selected": "Tick at least one contract.",
       "cannot_list_contracts": "Couldn't load your contracts from the portal, so the contract selection stays as it is."
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {"name": "Get data now"}
+    },
+    "sensor": {
+      "meter_index": {"name": "Meter index"},
+      "consumption_period": {"name": "Period consumption"},
+      "period_avg_daily": {"name": "Period avg daily"},
+      "latest_daily_consumption": {"name": "Latest daily consumption"},
+      "rolling_7d_avg": {"name": "7-day rolling average"},
+      "month_to_date": {"name": "Month-to-date consumption"},
+      "last_reading_date": {"name": "Last reading date"},
+      "reading_type": {"name": "Reading type"},
+      "period_days": {"name": "Period days"},
+      "last_invoice_amount": {"name": "Last invoice amount"},
+      "last_invoice_status": {"name": "Last invoice status"},
+      "last_invoice_period_end": {"name": "Last invoice period end"},
+      "last_invoice_issue_date": {"name": "Last invoice issue date"},
+      "current_period_end_estimate": {"name": "Current period ends (estimate)"},
+      "next_invoice_date_estimate": {"name": "Next invoice date (estimate)"},
+      "flow_qmax_today": {"name": "Peak flow today"},
+      "flow_qmin_today": {"name": "Min flow today"},
+      "flow_qmax_time_today": {"name": "Peak flow time today"},
+      "flow_data_date": {"name": "Latest flow data date"},
+      "possible_leak": {"name": "Possible leak"}
     }
   }
 }

@@ -55,6 +55,9 @@
     }
   },
   "entity": {
+    "button": {
+      "refresh": {"name": "Get data now"}
+    },
     "sensor": {
       "meter_index": {"name": "Meter index"},
       "consumption_period": {"name": "Period consumption"},

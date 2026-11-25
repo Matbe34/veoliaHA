@@ -1,0 +1,2979 @@
+{
+ "hourly": [
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "23:59",
+   "lectura": "89,263",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "22:59",
+   "lectura": "89,256",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "21:59",
+   "lectura": "89,256",
+   "consumo": "0,013",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "20:59",
+   "lectura": "89,243",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "19:59",
+   "lectura": "89,243",
+   "consumo": "0,198",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "18:59",
+   "lectura": "89,045",
+   "consumo": "0,062",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "17:59",
+   "lectura": "88,983",
+   "consumo": "0,017",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "16:59",
+   "lectura": "88,966",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "15:59",
+   "lectura": "88,966",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "14:59",
+   "lectura": "88,963",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "13:59",
+   "lectura": "88,963",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "12:59",
+   "lectura": "88,955",
+   "consumo": "0,006",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "11:59",
+   "lectura": "88,949",
+   "consumo": "0,028",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "10:59",
+   "lectura": "88,921",
+   "consumo": "0,021",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "09:59",
+   "lectura": "88,9",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "08:59",
+   "lectura": "88,9",
+   "consumo": "0,019",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "07:59",
+   "lectura": "88,881",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "06:59",
+   "lectura": "88,873",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "05:59",
+   "lectura": "88,873",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "04:59",
+   "lectura": "88,873",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "03:59",
+   "lectura": "88,87",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "02:59",
+   "lectura": "88,87",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "01:59",
+   "lectura": "88,87",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "00:59",
+   "lectura": "88,87",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "23:59",
+   "lectura": "88,87",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "22:59",
+   "lectura": "88,869",
+   "consumo": "0,021",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "21:59",
+   "lectura": "88,848",
+   "consumo": "0,026",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "20:59",
+   "lectura": "88,822",
+   "consumo": "0,027",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "19:59",
+   "lectura": "88,795",
+   "consumo": "0,129",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "18:59",
+   "lectura": "88,666",
+   "consumo": "0,046",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "17:59",
+   "lectura": "88,62",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "16:59",
+   "lectura": "88,613",
+   "consumo": "0,026",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "15:59",
+   "lectura": "88,587",
+   "consumo": "0,045",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "14:59",
+   "lectura": "88,542",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "13:59",
+   "lectura": "88,534",
+   "consumo": "0,046",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "12:59",
+   "lectura": "88,488",
+   "consumo": "0,032",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "11:59",
+   "lectura": "88,456",
+   "consumo": "0,002",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "10:59",
+   "lectura": "88,454",
+   "consumo": "0,015",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "09:59",
+   "lectura": "88,439",
+   "consumo": "0,002",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "08:59",
+   "lectura": "88,437",
+   "consumo": "0,013",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "07:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "06:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "05:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "04:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "03:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "01:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "00:59",
+   "lectura": "88,424",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "23:59",
+   "lectura": "88,424",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "22:59",
+   "lectura": "88,423",
+   "consumo": "0,006",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "21:59",
+   "lectura": "88,417",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "20:59",
+   "lectura": "88,417",
+   "consumo": "0,048",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "19:59",
+   "lectura": "88,369",
+   "consumo": "0,214",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "18:59",
+   "lectura": "88,155",
+   "consumo": "0,047",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "17:59",
+   "lectura": "88,108",
+   "consumo": "0,055",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "16:59",
+   "lectura": "88,053",
+   "consumo": "0,016",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "15:59",
+   "lectura": "88,037",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "14:59",
+   "lectura": "88,037",
+   "consumo": "0,031",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "13:59",
+   "lectura": "88,006",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "12:59",
+   "lectura": "87,998",
+   "consumo": "0,013",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "11:59",
+   "lectura": "87,985",
+   "consumo": "0,033",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "10:59",
+   "lectura": "87,952",
+   "consumo": "0,039",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "09:59",
+   "lectura": "87,913",
+   "consumo": "0,006",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "08:59",
+   "lectura": "87,907",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "07:59",
+   "lectura": "87,9",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "06:59",
+   "lectura": "87,9",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "05:59",
+   "lectura": "87,892",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "04:59",
+   "lectura": "87,892",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "03:59",
+   "lectura": "87,892",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "02:59",
+   "lectura": "87,892",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "01:59",
+   "lectura": "87,892",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "00:59",
+   "lectura": "87,892",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "23:59",
+   "lectura": "97,2",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "22:59",
+   "lectura": "97,199",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "21:58",
+   "lectura": "97,199",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "20:58",
+   "lectura": "97,192",
+   "consumo": "0,005",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "19:58",
+   "lectura": "97,187",
+   "consumo": "0,033",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "18:58",
+   "lectura": "97,154",
+   "consumo": "0,133",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "17:59",
+   "lectura": "97,021",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "16:59",
+   "lectura": "97,014",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "15:59",
+   "lectura": "97,013",
+   "consumo": "0,07",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "14:59",
+   "lectura": "96,943",
+   "consumo": "0,227",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "13:00",
+   "lectura": "96,934",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "12:00",
+   "lectura": "96,925",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "11:00",
+   "lectura": "96,916",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "10:00",
+   "lectura": "96,907",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "09:00",
+   "lectura": "96,898",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "08:00",
+   "lectura": "96,889",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "07:00",
+   "lectura": "96,88",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "06:00",
+   "lectura": "96,871",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "05:00",
+   "lectura": "96,862",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "04:00",
+   "lectura": "96,853",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "03:00",
+   "lectura": "96,844",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "02:00",
+   "lectura": "96,835",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "01:00",
+   "lectura": "96,826",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "00:00",
+   "lectura": "96,817",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "23:00",
+   "lectura": "96,808",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "22:00",
+   "lectura": "96,799",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "21:00",
+   "lectura": "96,79",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "20:00",
+   "lectura": "96,781",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "19:00",
+   "lectura": "96,772",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "18:00",
+   "lectura": "96,763",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "17:00",
+   "lectura": "96,754",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "16:00",
+   "lectura": "96,745",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "15:00",
+   "lectura": "96,736",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "14:00",
+   "lectura": "96,727",
+   "consumo": "0,011",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "13:59",
+   "lectura": "96,716",
+   "consumo": "-0,006",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "12:59",
+   "lectura": "96,711",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "11:59",
+   "lectura": "96,711",
+   "consumo": "0,002",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "10:59",
+   "lectura": "96,709",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "09:59",
+   "lectura": "96,709",
+   "consumo": "0,047",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "08:59",
+   "lectura": "96,662",
+   "consumo": "0,091",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "07:59",
+   "lectura": "96,571",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "06:59",
+   "lectura": "96,568",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "05:59",
+   "lectura": "96,568",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "04:59",
+   "lectura": "96,568",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "03:59",
+   "lectura": "96,568",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "02:59",
+   "lectura": "96,567",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "01:59",
+   "lectura": "96,564",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "00:59",
+   "lectura": "96,555",
+   "consumo": "0,03",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "23:59",
+   "lectura": "163,579",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "22:59",
+   "lectura": "163,575",
+   "consumo": "0,01",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "21:59",
+   "lectura": "163,565",
+   "consumo": "0,013",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "20:59",
+   "lectura": "163,552",
+   "consumo": "0,03",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "19:59",
+   "lectura": "163,522",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "18:59",
+   "lectura": "163,513",
+   "consumo": "0,098",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "17:59",
+   "lectura": "163,415",
+   "consumo": "0,048",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "16:59",
+   "lectura": "163,367",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "15:59",
+   "lectura": "163,36",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "14:59",
+   "lectura": "163,351",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "13:59",
+   "lectura": "163,351",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "12:59",
+   "lectura": "163,351",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "11:59",
+   "lectura": "163,347",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "10:59",
+   "lectura": "163,347",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "09:59",
+   "lectura": "163,346",
+   "consumo": "0,035",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "08:59",
+   "lectura": "163,311",
+   "consumo": "0,025",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "07:59",
+   "lectura": "163,286",
+   "consumo": "0,01",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "06:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "05:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "04:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "03:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "02:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "01:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "00:59",
+   "lectura": "163,276",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "23:59",
+   "lectura": "163,276",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "22:59",
+   "lectura": "163,275",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "21:59",
+   "lectura": "163,275",
+   "consumo": "0,005",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "20:59",
+   "lectura": "163,27",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "19:59",
+   "lectura": "163,27",
+   "consumo": "0,04",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "18:59",
+   "lectura": "163,23",
+   "consumo": "0,162",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "17:59",
+   "lectura": "163,068",
+   "consumo": "0,028",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "16:59",
+   "lectura": "163,04",
+   "consumo": "0,045",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "15:59",
+   "lectura": "162,995",
+   "consumo": "0,019",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "14:59",
+   "lectura": "162,976",
+   "consumo": "0,082",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "13:59",
+   "lectura": "162,894",
+   "consumo": "0,022",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "12:59",
+   "lectura": "162,872",
+   "consumo": "0,033",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "11:59",
+   "lectura": "162,839",
+   "consumo": "0,021",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "10:59",
+   "lectura": "162,818",
+   "consumo": "0,043",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "09:59",
+   "lectura": "162,775",
+   "consumo": "0,021",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "08:59",
+   "lectura": "162,754",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "07:59",
+   "lectura": "162,746",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "06:59",
+   "lectura": "162,746",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "05:59",
+   "lectura": "162,745",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "04:59",
+   "lectura": "162,745",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "03:59",
+   "lectura": "162,737",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "02:59",
+   "lectura": "162,737",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "02:59",
+   "lectura": "162,737",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "01:59",
+   "lectura": "162,737",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "00:59",
+   "lectura": "162,737",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "23:59",
+   "lectura": "162,736",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "22:59",
+   "lectura": "162,736",
+   "consumo": "0,013",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "21:59",
+   "lectura": "162,723",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "20:59",
+   "lectura": "162,714",
+   "consumo": "0,006",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "19:59",
+   "lectura": "162,708",
+   "consumo": "0,055",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "18:59",
+   "lectura": "162,653",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "17:59",
+   "lectura": "162,644",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "16:59",
+   "lectura": "162,64",
+   "consumo": "0,005",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "15:59",
+   "lectura": "162,635",
+   "consumo": "0,046",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "14:59",
+   "lectura": "162,589",
+   "consumo": "0,028",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "13:59",
+   "lectura": "162,561",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "12:59",
+   "lectura": "162,561",
+   "consumo": "0,005",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "11:59",
+   "lectura": "162,556",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "10:59",
+   "lectura": "162,555",
+   "consumo": "0,015",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "09:59",
+   "lectura": "162,54",
+   "consumo": "0,018",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "08:59",
+   "lectura": "162,522",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "07:59",
+   "lectura": "162,522",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "06:59",
+   "lectura": "162,521",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "05:59",
+   "lectura": "162,521",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "04:59",
+   "lectura": "162,521",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "03:59",
+   "lectura": "162,521",
+   "consumo": "0,002",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "02:59",
+   "lectura": "162,519",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "01:59",
+   "lectura": "162,519",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "00:59",
+   "lectura": "162,519",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "08:59",
+   "lectura": "172,343",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "07:59",
+   "lectura": "172,339",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "06:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "05:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "04:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "03:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "02:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "01:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "00:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "172,336",
+   "consumo": "0,013",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "22:59",
+   "lectura": "172,323",
+   "consumo": "0,04",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "21:59",
+   "lectura": "172,283",
+   "consumo": "0,009",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "20:58",
+   "lectura": "172,274",
+   "consumo": "0,006",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "19:58",
+   "lectura": "172,268",
+   "consumo": "0,01",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "18:58",
+   "lectura": "172,258",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "17:58",
+   "lectura": "172,258",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "16:59",
+   "lectura": "172,258",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "15:59",
+   "lectura": "172,255",
+   "consumo": "0,039",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "14:59",
+   "lectura": "172,216",
+   "consumo": "0,017",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "13:59",
+   "lectura": "172,199",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "12:59",
+   "lectura": "172,199",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "11:59",
+   "lectura": "172,199",
+   "consumo": "0,033",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "10:59",
+   "lectura": "172,166",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "09:59",
+   "lectura": "172,158",
+   "consumo": "0,082",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "08:59",
+   "lectura": "172,076",
+   "consumo": "0,008",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "07:59",
+   "lectura": "172,068",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "06:59",
+   "lectura": "172,068",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "05:59",
+   "lectura": "172,068",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "04:59",
+   "lectura": "172,068",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "03:59",
+   "lectura": "172,068",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "02:59",
+   "lectura": "172,068",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "01:59",
+   "lectura": "172,068",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "00:59",
+   "lectura": "172,064",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "172,057",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "22:59",
+   "lectura": "172,05",
+   "consumo": "0,03",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "21:59",
+   "lectura": "172,02",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "20:59",
+   "lectura": "172,013",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "19:59",
+   "lectura": "172,009",
+   "consumo": "0,093",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "18:59",
+   "lectura": "171,916",
+   "consumo": "0,025",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "17:59",
+   "lectura": "171,891",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "16:59",
+   "lectura": "171,888",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "15:59",
+   "lectura": "171,885",
+   "consumo": "0,02",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "14:59",
+   "lectura": "171,865",
+   "consumo": "0,007",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "13:59",
+   "lectura": "171,858",
+   "consumo": "0,166",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "12:59",
+   "lectura": "171,692",
+   "consumo": "0,094",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "11:59",
+   "lectura": "171,598",
+   "consumo": "0,038",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "10:59",
+   "lectura": "171,56",
+   "consumo": "0,003",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "09:59",
+   "lectura": "171,557",
+   "consumo": "0,011",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "08:58",
+   "lectura": "171,546",
+   "consumo": "0,005",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "07:58",
+   "lectura": "171,541",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "06:58",
+   "lectura": "171,541",
+   "consumo": "0,004",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "05:58",
+   "lectura": "171,537",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "04:59",
+   "lectura": "171,537",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "03:59",
+   "lectura": "171,537",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "02:59",
+   "lectura": "171,537",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "01:59",
+   "lectura": "171,537",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "00:58",
+   "lectura": "171,537",
+   "consumo": "0,001",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  }
+ ],
+ "daily": [
+  {
+   "fechaConsumo": "23 nov 2026",
+   "horaConsumo": "04:59",
+   "lectura": "172,336",
+   "consumo": "0",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "22 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "172,336",
+   "consumo": "0,279",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "172,057",
+   "consumo": "0,521",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 nov 2026",
+   "horaConsumo": "23:58",
+   "lectura": "171,536",
+   "consumo": "0,162",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "19 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "171,374",
+   "consumo": "0,271",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "18 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "171,103",
+   "consumo": "0,258",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "17 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "170,845",
+   "consumo": "0,241",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "16 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "170,604",
+   "consumo": "0,256",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "15 nov 2026",
+   "horaConsumo": "23:59",
+   "lectura": "170,348",
+   "consumo": "0,348",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "26 oct 2026",
+   "horaConsumo": "23:59",
+   "lectura": "163,579",
+   "consumo": "0,303",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "25 oct 2026",
+   "horaConsumo": "23:59",
+   "lectura": "163,276",
+   "consumo": "0,54",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "24 oct 2026",
+   "horaConsumo": "23:59",
+   "lectura": "162,736",
+   "consumo": "0,217",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "21 abr 2026",
+   "horaConsumo": "23:59",
+   "lectura": "97,2",
+   "consumo": "0,392",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "20 abr 2026",
+   "horaConsumo": "23:00",
+   "lectura": "96,808",
+   "consumo": "0,283",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": true
+  },
+  {
+   "fechaConsumo": "30 mar 2026",
+   "horaConsumo": "23:59",
+   "lectura": "89,263",
+   "consumo": "0,393",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "29 mar 2026",
+   "horaConsumo": "23:59",
+   "lectura": "88,87",
+   "consumo": "0,446",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "28 mar 2026",
+   "horaConsumo": "23:59",
+   "lectura": "88,424",
+   "consumo": "0,533",
+   "consumptionType": {
+    "consumptionLiteral": "REAL",
+    "consumptionClass": "real"
+   },
+   "lecturaEstimada": false
+  }
+ ],
+ "monthly": [
+  {
+   "fechaConsumo": "nov 2026",
+   "consumo": "7,152",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "oct 2026",
+   "consumo": "10,13",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "sep 2026",
+   "consumo": "13,724",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "ago 2026",
+   "consumo": "10,035",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "jul 2026",
+   "consumo": "9,315",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "jun 2026",
+   "consumo": "10,447",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "may 2026",
+   "consumo": "11,147",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "abr 2026",
+   "consumo": "10,868",
+   "lecturaEstimada": false
+  },
+  {
+   "fechaConsumo": "mar 2026",
+   "consumo": "10,088",
+   "lecturaEstimada": false
+  }
+ ]
+}

@@ -6,6 +6,34 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Added
+- A **Get data now** button on each contract's device that polls the portal
+  immediately, so a long poll interval doesn't mean waiting for fresh data.
+- Hourly statistics (`veolia_water:hourly_consumption_<slug>`) for smart
+  meters: the meter's cumulative reading, hour by hour, ready to use as a
+  water source in the Energy dashboard. The first poll after start-up imports
+  all the history the portal keeps; later polls refresh the last 7 days.
+- Spanish translation. `translations/en.json` now matches `strings.json`
+  (it was missing the sensor names and one option description).
+- Verified against Viaqua (`viaqua.veolia.gal`).
+
+### Fixed
+- The meter index sensor now takes the latest hourly reading when there is
+  one. The landing page's reading lagged the hourly series by many hours.
+- History requests failed on portals that reject long date ranges (Viaqua
+  returns nothing above ~365 days). Daily and monthly requests are now cut
+  into 360-day windows, and hourly ones into 40-day windows, because the
+  portal silently drops rows past ~1000 per query.
+- Some portals answer a valid login with a bounce back to `/login`, which made
+  setup fail with "Don't know the landing-page path". The login is now retried
+  (up to 5 attempts, with a clean cookie jar each time). A real password
+  rejection still fails immediately.
+- Paged requests treated the end index as exclusive; it is inclusive.
+- Transient 5xx errors from the portal are retried instead of dropping the
+  data for that poll.
+- Daily history now goes back up to two years on the first poll instead of
+  100 days; the sensors still use only the last 100.
+
 ## [1.3.1] - 2026-11-17
 
 ### Fixed

@@ -24,6 +24,45 @@ from .const import STATS_SOURCE
 _LOGGER = logging.getLogger(__name__)
 
 
+def import_hourly_sum_series(
+    hass: HomeAssistant,
+    statistic_id: str,
+    name: str,
+    unit_of_measurement: str,
+    hourly_values: Iterable[tuple[datetime, Optional[float]]],
+) -> bool:
+    """Queue a cumulative hourly series: `(hour start, running total)` pairs.
+
+    The value is the meter's own cumulative reading, used as both `state` and
+    `sum`. A running total that never depends on where the fetched window
+    starts means re-pushing any window is idempotent and lines up with what is
+    already stored, so the Energy dashboard can read hourly deltas from it.
+    """
+    cleaned = sorted(
+        ((start, float(v)) for start, v in hourly_values if v is not None),
+        key=lambda p: p[0],
+    )
+    if not cleaned:
+        return False
+
+    stats: list[StatisticData] = [
+        {"start": start, "state": v, "sum": v} for start, v in cleaned
+    ]
+    converter = STATISTIC_UNIT_TO_UNIT_CONVERTER.get(unit_of_measurement)
+    metadata: StatisticMetaData = {
+        "has_sum": True,
+        "mean_type": StatisticMeanType.NONE,
+        "name": name,
+        "source": STATS_SOURCE,
+        "statistic_id": statistic_id,
+        "unit_class": converter.UNIT_CLASS if converter else None,
+        "unit_of_measurement": unit_of_measurement,
+    }
+    async_add_external_statistics(hass, metadata, stats)
+    _LOGGER.debug("Queued %d hourly points for %s", len(stats), statistic_id)
+    return True
+
+
 def import_daily_series(
     hass: HomeAssistant,
     statistic_id: str,

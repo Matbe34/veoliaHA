@@ -76,6 +76,15 @@ class DailyConsumption:
 
 
 @dataclass
+class HourlyConsumption:
+    """One hour from buscarConsumosHoraria."""
+    start: datetime                      # tz-aware UTC start of the hour
+    lectura_m3: Optional[float] = None   # cumulative meter reading at the end of the hour
+    consumo_m3: Optional[float] = None
+    is_estimated: bool = False
+
+
+@dataclass
 class MonthlyConsumption:
     """One month from buscarConsumosMensual."""
     year: int
@@ -106,6 +115,7 @@ class Snapshot:
     caudales: list[Caudal] = field(default_factory=list)
     daily: list[DailyConsumption] = field(default_factory=list)
     monthly: list[MonthlyConsumption] = field(default_factory=list)
+    hourly: list[HourlyConsumption] = field(default_factory=list)
 
 
 def serialize(value):

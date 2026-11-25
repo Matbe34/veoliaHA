@@ -1,0 +1,84 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Veolia Water",
+        "description": "Inicia sesión en el área de clientes de Veolia / Sorea / Viaqua.",
+        "data": {
+          "username": "Usuario",
+          "password": "Contraseña",
+          "portal_url": "URL del portal"
+        },
+        "data_description": {
+          "portal_url": "Sustituye la URL base del portal (p. ej. https://viaqua.veolia.gal). Déjala por defecto para Veolia Cataluña."
+        }
+      },
+      "contracts": {
+        "title": "Elige los contratos",
+        "description": "Tu cuenta tiene varios contratos. Marca los que quieras añadir: cada uno tendrá su propio dispositivo.",
+        "data": {
+          "contracts": "Contratos"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Usuario o contraseña incorrectos.",
+      "unsupported_portal": "Este portal no es compatible. Solo funcionan los portales españoles y catalanes de Veolia (sorea.veolia.cat, agbar.veolia.cat, hidraqua.veolia.es, viaqua.veolia.gal...), no los franceses como eau.veolia.fr o mel-ileo.fr.",
+      "cdn_blocked": "La CDN del portal ha devuelto un bloqueo (HTTP 403/429). Inténtalo de nuevo más tarde.",
+      "cannot_connect": "No se ha podido conectar con el portal.",
+      "unknown": "Error inesperado. Revisa los registros.",
+      "no_contracts_selected": "Marca al menos un contrato."
+    },
+    "abort": {
+      "already_configured": "Esta cuenta ya está configurada."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opciones de Veolia Water",
+        "data": {
+          "scan_interval_hours": "Intervalo de consulta (horas)",
+          "contracts": "Contratos",
+          "portal_site": "Nombre del sitio del portal (avanzado)"
+        },
+        "data_description": {
+          "scan_interval_hours": "Cada cuánto se consulta el portal. 6 h coincide con la cadencia de subida de datos del contador inteligente.",
+          "contracts": "Cada contrato marcado tiene su propio dispositivo. Al desmarcar uno se elimina su dispositivo, pero se conserva el histórico importado.",
+          "portal_site": "Nombre del sitio Liferay en la URL del portal, p. ej. `soreaonline` en /group/soreaonline/inicio. Déjalo vacío para detectarlo automáticamente."
+        }
+      }
+    },
+    "error": {
+      "no_contracts_selected": "Marca al menos un contrato.",
+      "cannot_list_contracts": "No se han podido cargar tus contratos desde el portal, así que la selección de contratos se mantiene como estaba."
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {"name": "Obtener datos ahora"}
+    },
+    "sensor": {
+      "meter_index": {"name": "Lectura del contador"},
+      "consumption_period": {"name": "Consumo del periodo"},
+      "period_avg_daily": {"name": "Media diaria del periodo"},
+      "latest_daily_consumption": {"name": "Último consumo diario"},
+      "rolling_7d_avg": {"name": "Media móvil de 7 días"},
+      "month_to_date": {"name": "Consumo del mes en curso"},
+      "last_reading_date": {"name": "Fecha de la última lectura"},
+      "reading_type": {"name": "Tipo de lectura"},
+      "period_days": {"name": "Días del periodo"},
+      "last_invoice_amount": {"name": "Importe de la última factura"},
+      "last_invoice_status": {"name": "Estado de la última factura"},
+      "last_invoice_period_end": {"name": "Fin del periodo de la última factura"},
+      "last_invoice_issue_date": {"name": "Fecha de emisión de la última factura"},
+      "current_period_end_estimate": {"name": "Fin del periodo actual (estimado)"},
+      "next_invoice_date_estimate": {"name": "Próxima factura (estimada)"},
+      "flow_qmax_today": {"name": "Caudal máximo de hoy"},
+      "flow_qmin_today": {"name": "Caudal mínimo de hoy"},
+      "flow_qmax_time_today": {"name": "Hora del caudal máximo de hoy"},
+      "flow_data_date": {"name": "Fecha del último dato de caudal"},
+      "possible_leak": {"name": "Posible fuga"}
+    }
+  }
+}

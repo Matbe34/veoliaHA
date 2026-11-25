@@ -4,11 +4,12 @@
 
 Tracks Veolia / Sorea water consumption directly inside Home Assistant —
 meter readings, billing-period totals, the last invoice, and (for smart
-meters) per-day flow telemetry and 90 days of historical statistics imported
-into HA's recorder.
+meters) per-day flow telemetry and hourly, daily and monthly historical
+statistics imported into HA's recorder.
 
 Verified against [`sorea.veolia.cat`](https://sorea.veolia.cat) (Veolia
-Catalonia). Other Veolia-group portals run the same Liferay application under
+Catalonia) and [`viaqua.veolia.gal`](https://viaqua.veolia.gal) (Viaqua,
+Galicia). Other Veolia-group portals run the same Liferay application under
 a different site name, which the integration discovers at login — set the
 portal base URL and try it. If the landing page can't be found, run
 `scripts/probe_portal.py` (see [Unsupported portals](#unsupported-portals)).
@@ -59,15 +60,23 @@ be read, only its sensors go unavailable.
 
 ## Long-term statistics
 
-On the first cycle, 90 days of daily / 24 months of monthly history are
-imported as external statistics:
+For smart meters, the first poll after Home Assistant starts imports everything
+the portal keeps (up to two years) as external statistics; later polls refresh
+only the last few days. Re-importing is idempotent.
 
-- `veolia_water:meter_index_<slug>` — cumulative meter
+- `veolia_water:hourly_consumption_<slug>` — hourly, cumulative meter reading
+  in m³ (`sum`), usable as a water source in the **Energy** dashboard
+- `veolia_water:meter_index_<slug>` — cumulative meter, daily
 - `veolia_water:daily_consumption_<slug>` — daily volume
 - `veolia_water:monthly_consumption_<slug>` — monthly volume
 - `veolia_water:flow_qmax_<slug>` — daily peak flow
 
 They show up in **History** and `statistics-graph` cards immediately.
+
+The portal data arrives in batches, about 5 hours behind real time, and it
+silently drops rows past ~1000 per query, so requests are cut into windows
+(40 days for hourly, 360 for daily/monthly). The first import can take a
+couple of minutes.
 
 ## What's *not* available
 

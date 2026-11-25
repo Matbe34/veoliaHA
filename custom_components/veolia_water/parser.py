@@ -11,14 +11,17 @@ from __future__ import annotations
 import json
 import logging
 import re
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timezone
 from typing import Any, Optional
+from zoneinfo import ZoneInfo
 
+from .const import PORTAL_TIMEZONE
 from .models import (
     Caudal,
     Contract,
     DailyConsumption,
     FlowSummary,
+    HourlyConsumption,
     Invoice,
     MonthlyConsumption,
     Reading,
@@ -343,6 +346,46 @@ def parse_daily_response(payload: dict) -> list[DailyConsumption]:
             is_estimated=is_est,
         ))
     return out
+
+
+def parse_hourly_response(payload: dict) -> list[HourlyConsumption]:
+    """Parse buscarConsumosHoraria into UTC-stamped hours, oldest first.
+
+    Stamps are local time with no offset, and `HH:59` closes the hour that
+    started at HH:00. When clocks go back the local hour repeats, so after
+    ordering (the portal lists newest first) the second occurrence of a repeated
+    stamp is the one with fold=1.
+    """
+    if not isinstance(payload, dict):
+        return []
+    tz = ZoneInfo(PORTAL_TIMEZONE)
+    items: list[tuple[datetime, dict]] = []
+    for item in payload.get("consumos") or []:
+        if not isinstance(item, dict):
+            continue
+        d = parse_date_spanish(item.get("fechaConsumo"))
+        t = parse_time(item.get("horaConsumo"))
+        if d is None or t is None:
+            continue
+        items.append((datetime(d.year, d.month, d.day, t.hour), item))
+
+    # Stable sort, newest first: equal stamps keep the portal's order.
+    items.sort(key=lambda pair: pair[0], reverse=True)
+    hours: dict[datetime, HourlyConsumption] = {}
+    previous: Optional[datetime] = None
+    for local, item in reversed(items):
+        fold = 1 if local == previous else 0
+        previous = local
+        start = local.replace(tzinfo=tz, fold=fold).astimezone(timezone.utc)
+        ct = item.get("consumptionType") or {}
+        literal = str(ct.get("consumptionLiteral") or "REAL") if isinstance(ct, dict) else "REAL"
+        hours[start] = HourlyConsumption(
+            start=start,
+            lectura_m3=parse_decimal(item.get("lectura")),
+            consumo_m3=parse_decimal(item.get("consumo")),
+            is_estimated=bool(item.get("lecturaEstimada")) or literal.upper() != "REAL",
+        )
+    return sorted(hours.values(), key=lambda h: h.start)
 
 
 def parse_monthly_response(payload: dict) -> list[MonthlyConsumption]:

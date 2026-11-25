@@ -21,7 +21,7 @@ from .cycle import configured_contracts, run_cycle
 from .models import Snapshot
 from .parser import ParseError
 from .portal import DEFAULT_BASE_URL, apply_overrides, profile_for_url
-from .stats import import_daily_series
+from .stats import import_daily_series, import_hourly_sum_series
 from .veolia_client import (
     CDNBlockedError,
     LoginError,
@@ -54,6 +54,8 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
         self._base_url: str = (opts.get(CONF_PORTAL_URL) or DEFAULT_BASE_URL).rstrip("/")
         # Empty: read whichever contract the portal opens on.
         self.contracts: list[str] = configured_contracts(opts)
+        # Contracts whose full history was already read since HA started.
+        self._backfilled: set[str] = set()
         self._profile = apply_overrides(
             profile_for_url(self._base_url), {"site": opts.get(CONF_PORTAL_SITE)}
         )
@@ -65,7 +67,7 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
                 base_url=self._base_url, profile=self._profile,
                 contract=self.contracts[0] if self.contracts else None,
             ) as client:
-                result = await run_cycle(client, self.contracts)
+                result = await run_cycle(client, self.contracts, self._backfilled)
         except LoginError as e:
             raise UpdateFailed(f"login: {e}") from e
         except CDNBlockedError as e:
@@ -97,10 +99,18 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
         overwrites points sharing a `start` and leaves older ones alone.
         """
         cnum = snap.contract.contract_number
-        if not (snap.caudales or snap.daily or snap.monthly):
+        if not (snap.caudales or snap.daily or snap.monthly or snap.hourly):
             return
 
         slug = _slug(cnum)
+        if snap.hourly:
+            import_hourly_sum_series(
+                self.hass,
+                statistic_id=f"{STATS_SOURCE}:hourly_consumption_{slug}",
+                name=f"Veolia {cnum} hourly consumption",
+                unit_of_measurement="m³",
+                hourly_values=[(h.start, h.lectura_m3) for h in snap.hourly],
+            )
         if snap.caudales:
             import_daily_series(
                 self.hass,
