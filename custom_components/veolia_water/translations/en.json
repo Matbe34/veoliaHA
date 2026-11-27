@@ -74,9 +74,9 @@
       "last_invoice_issue_date": {"name": "Last invoice issue date"},
       "current_period_end_estimate": {"name": "Current period ends (estimate)"},
       "next_invoice_date_estimate": {"name": "Next invoice date (estimate)"},
-      "flow_qmax_today": {"name": "Peak flow today"},
-      "flow_qmin_today": {"name": "Min flow today"},
-      "flow_qmax_time_today": {"name": "Peak flow time today"},
+      "flow_qmax_today": {"name": "Peak flow (latest day)"},
+      "flow_qmin_today": {"name": "Min flow (latest day)"},
+      "flow_qmax_time_today": {"name": "Peak flow time (latest day)"},
       "flow_data_date": {"name": "Latest flow data date"},
       "possible_leak": {"name": "Possible leak"}
     }

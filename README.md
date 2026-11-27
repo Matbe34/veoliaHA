@@ -60,9 +60,12 @@ be read, only its sensors go unavailable.
 
 ## Long-term statistics
 
-For smart meters, the first poll after Home Assistant starts imports everything
-the portal keeps (up to two years) as external statistics; later polls refresh
-only the last few days. Re-importing is idempotent.
+For smart meters, the first time a series is imported (when the recorder holds
+none of it yet) it gets everything the portal keeps, up to two years. Stored
+history is never fetched again: later polls refresh only the recent window
+(7 days hourly, 100 days daily, 11 months monthly). A first import that fails
+part-way imports nothing and is retried in full on the next poll.
+Re-importing is idempotent.
 
 - `veolia_water:hourly_consumption_<slug>` — hourly, cumulative meter reading
   in m³ (`sum`), usable as a water source in the **Energy** dashboard
@@ -75,8 +78,8 @@ They show up in **History** and `statistics-graph` cards immediately.
 
 The portal data arrives in batches, about 5 hours behind real time, and it
 silently drops rows past ~1000 per query, so requests are cut into windows
-(40 days for hourly, 360 for daily/monthly). The first import can take a
-couple of minutes.
+(40 days for hourly, 360 for daily, 11 whole months for monthly). The first
+import can take a couple of minutes.
 
 ## What's *not* available
 

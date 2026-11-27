@@ -10,8 +10,8 @@ telemetry with hourly, daily and monthly history imported into HA's recorder.
 - ~20 sensors: cumulative meter, period / monthly / daily consumption,
   rolling 7-day average, month-to-date, last-invoice info, peak-flow
   telemetry, possible-leak indicator, sync diagnostics.
-- Long-term statistics backfilled on first cycle (up to 2 years of hourly,
-  daily and monthly data), suitable for the Energy dashboard.
+- Long-term statistics backfilled once (up to 2 years of hourly, daily and
+  monthly data), suitable for the Energy dashboard.
 - Native HA config flow — no YAML, no MQTT broker required.
 
 Default target: `https://sorea.veolia.cat` (Catalonia). The portal URL is

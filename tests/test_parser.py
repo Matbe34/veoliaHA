@@ -398,6 +398,17 @@ def test_parse_monthly_response_basic():
     assert out[2].consumo_m3 == pytest.approx(13.641, rel=1e-4)
 
 
+def test_parse_monthly_response_keeps_one_row_per_month():
+    # A guard: windows hold whole months, but a repeated month must not import twice.
+    payload = {"consumos": [
+        {"fechaConsumo": "ene 2026", "consumo": "7,000"},
+        {"fechaConsumo": "ene 2026", "consumo": "0,300"},
+        {"fechaConsumo": "dic 2025", "consumo": "6,000"},
+    ]}
+    out = parse_monthly_response(payload)
+    assert [(m.year, m.month, m.consumo_m3) for m in out] == [(2026, 1, 7.0), (2025, 12, 6.0)]
+
+
 def test_parse_monthly_response_handles_garbage():
     assert parse_monthly_response({"consumos": [{"fechaConsumo": 2026}]}) == []
     assert parse_monthly_response({"consumos": [{"fechaConsumo": None}]}) == []

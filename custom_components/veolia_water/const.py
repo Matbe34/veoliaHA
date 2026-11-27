@@ -26,11 +26,14 @@ PORTAL_TIMEZONE = "Europe/Madrid"
 # hourly <= 40 days (24 h * 40 = 960 rows), daily/monthly <= ~365 days.
 HOURLY_WINDOW_DAYS = 40
 DAILY_WINDOW_DAYS = 360
+# Whole months per monthly query: 11 months is at most 335 days.
+MONTHLY_WINDOW_MONTHS = 11
 CONSUMOS_PAGE_SIZE = 500
+# Two pages already reach the ~1000-row cap; more means the portal is not paging.
+MAX_CONSUMOS_PAGES = 4
 
-# How far back to look: everything the portal keeps on the first poll after
-# start-up, then just enough overlap to cover missed polls.
+# How far back to look: everything the portal keeps for a series the recorder
+# has nothing of yet (stored history doesn't change), else the recent window.
 BACKFILL_DAYS = 730
 HOURLY_REFRESH_DAYS = 7
 DAILY_REFRESH_DAYS = 100
-MONTHLY_REFRESH_DAYS = 360

@@ -7,7 +7,7 @@ reading anything. Kept free of Home Assistant imports so it can be unit-tested.
 from __future__ import annotations
 
 import logging
-from collections.abc import Mapping
+from collections.abc import Awaitable, Callable, Collection, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
@@ -19,7 +19,7 @@ from .const import (
     CONF_CONTRACTS,
     DAILY_REFRESH_DAYS,
     HOURLY_REFRESH_DAYS,
-    MONTHLY_REFRESH_DAYS,
+    MONTHLY_WINDOW_MONTHS,
     PORTAL_TIMEZONE,
 )
 from .derive import apply_daily_derivations
@@ -39,10 +39,16 @@ from .veolia_client import (
     SessionExpiredError,
     VeoliaClient,
     VeoliaError,
+    month_start,
 )
 
 _LOGGER = logging.getLogger(__name__)
 _TZ = ZoneInfo(PORTAL_TIMEZONE)
+
+# The history series that get a full backfill when the recorder has none of them.
+SERIES = ("hourly", "daily", "monthly")
+# `stored(contract_number, series)`: does the recorder already hold that series?
+StoredLookup = Callable[[str, str], Awaitable[bool]]
 
 
 class ContractMismatchError(VeoliaError):
@@ -75,25 +81,22 @@ def configured_contracts(opts: Mapping[str, Any]) -> list[str]:
 
 
 async def run_cycle(
-    client: VeoliaClient, wanted: list[str], backfilled: Optional[set[str]] = None,
+    client: VeoliaClient, wanted: list[str], stored: Optional[StoredLookup] = None,
 ) -> CycleResult:
     """Log in and read every contract in `wanted` (or the default one if empty).
 
     A contract that fails is recorded in `errors` and the rest are still read.
     A failed login or a CDN block ends the cycle, since nothing else can work.
 
-    `backfilled` holds the contracts whose full history was already read; those
-    only get a short recent window. The set is updated in place as contracts
-    get their first complete read.
+    A series `stored` says the recorder lacks is read back two years; the rest
+    only get their recent window. Without `stored`, nothing is backfilled.
     """
-    if backfilled is None:
-        backfilled = set()
     await client.login()
     parsed = parse_inicio(await client.fetch_inicio())
     result = CycleResult()
 
     if not wanted:
-        snapshot = await _build_snapshot(client, parsed, backfilled)
+        snapshot = await _build_snapshot(client, parsed, stored)
         result.snapshots[snapshot.contract.contract_number] = snapshot
         return result
 
@@ -112,7 +115,7 @@ async def run_cycle(
                         f"asked the portal for contract {number} but it showed "
                         f"contract {shown}"
                     )
-            result.snapshots[number] = await _build_snapshot(client, parsed, backfilled)
+            result.snapshots[number] = await _build_snapshot(client, parsed, stored)
         except (LoginError, CDNBlockedError):
             raise
         except (ParseError, VeoliaError) as e:
@@ -121,15 +124,17 @@ async def run_cycle(
     return result
 
 
-async def _build_snapshot(client: VeoliaClient, parsed, backfilled: set[str]) -> Snapshot:
+async def _build_snapshot(
+    client: VeoliaClient, parsed, stored: Optional[StoredLookup] = None,
+) -> Snapshot:
     """Everything for the contract the session currently shows."""
     contract, reading, invoice, history = parsed
-    number = contract.contract_number
+    backfill: set[str] = set()
+    if stored is not None and contract.smart_metering is not False:
+        backfill = {s for s in SERIES if not await stored(contract.contract_number, s)}
     caudales, daily, monthly, flow, hourly = await _fetch_smart_meter_data(
-        client, contract.smart_metering, full_history=number not in backfilled
+        client, contract.smart_metering, backfill=backfill
     )
-    if hourly:
-        backfilled.add(number)
 
     if invoice.period_end is not None:
         invoice.current_period_end_estimate = invoice.period_end + timedelta(days=91)
@@ -165,7 +170,7 @@ async def _build_snapshot(client: VeoliaClient, parsed, backfilled: set[str]) ->
 
 
 async def _fetch_smart_meter_data(
-    client: VeoliaClient, is_smart: Optional[bool], *, full_history: bool = False,
+    client: VeoliaClient, is_smart: Optional[bool], *, backfill: Collection[str] = (),
 ):
     caudales: list = []
     daily: list = []
@@ -199,8 +204,8 @@ async def _fetch_smart_meter_data(
             _LOGGER.warning("%s fetch failed: %s", label, e)
             return None
 
-    def _since(full_days: int, refresh_days: int):
-        return today - timedelta(days=full_days if full_history else refresh_days)
+    def _since(series: str, refresh_days: int):
+        return today - timedelta(days=BACKFILL_DAYS if series in backfill else refresh_days)
 
     caudales_payload = await _safe(
         "caudales",
@@ -213,16 +218,23 @@ async def _fetch_smart_meter_data(
     daily_payload = await _safe(
         "daily consumption",
         client.fetch_consumos_range(
-            p_auth, _since(BACKFILL_DAYS, DAILY_REFRESH_DAYS), today, tipo="diaria",
+            p_auth, _since("daily", DAILY_REFRESH_DAYS), today, tipo="diaria",
+            keep_partial="daily" not in backfill,
         ),
     )
     if daily_payload:
         daily = parse_daily_response(daily_payload)
 
+    # Whole months: two years back, or the one window that ends this month.
+    monthly_since = (
+        month_start(today - timedelta(days=BACKFILL_DAYS)) if "monthly" in backfill
+        else month_start(today, MONTHLY_WINDOW_MONTHS - 1)
+    )
     monthly_payload = await _safe(
         "monthly consumption",
         client.fetch_consumos_range(
-            p_auth, _since(BACKFILL_DAYS, MONTHLY_REFRESH_DAYS), today, tipo="mensual",
+            p_auth, monthly_since, today, tipo="mensual",
+            keep_partial="monthly" not in backfill,
         ),
     )
     if monthly_payload:
@@ -231,7 +243,8 @@ async def _fetch_smart_meter_data(
     hourly_payload = await _safe(
         "hourly consumption",
         client.fetch_consumos_range(
-            p_auth, _since(BACKFILL_DAYS, HOURLY_REFRESH_DAYS), today, tipo="horaria",
+            p_auth, _since("hourly", HOURLY_REFRESH_DAYS), today, tipo="horaria",
+            keep_partial="hourly" not in backfill,
         ),
     )
     if hourly_payload:

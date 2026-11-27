@@ -4,6 +4,8 @@ from __future__ import annotations
 import logging
 from datetime import date, timedelta
 
+from homeassistant.components.recorder import get_instance
+from homeassistant.components.recorder.statistics import get_last_statistics
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
@@ -54,8 +56,6 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
         self._base_url: str = (opts.get(CONF_PORTAL_URL) or DEFAULT_BASE_URL).rstrip("/")
         # Empty: read whichever contract the portal opens on.
         self.contracts: list[str] = configured_contracts(opts)
-        # Contracts whose full history was already read since HA started.
-        self._backfilled: set[str] = set()
         self._profile = apply_overrides(
             profile_for_url(self._base_url), {"site": opts.get(CONF_PORTAL_SITE)}
         )
@@ -67,7 +67,7 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
                 base_url=self._base_url, profile=self._profile,
                 contract=self.contracts[0] if self.contracts else None,
             ) as client:
-                result = await run_cycle(client, self.contracts, self._backfilled)
+                result = await run_cycle(client, self.contracts, self._is_stored)
         except LoginError as e:
             raise UpdateFailed(f"login: {e}") from e
         except CDNBlockedError as e:
@@ -92,6 +92,18 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
 
         return result.snapshots
 
+    async def _is_stored(self, contract_number: str, series: str) -> bool:
+        """Does the recorder already hold this series? Then skip its two-year backfill."""
+        statistic_id = _consumption_id(series, contract_number)
+        try:
+            last = await get_instance(self.hass).async_add_executor_job(
+                get_last_statistics, self.hass, 1, statistic_id, False, {"state"}
+            )
+        except Exception:  # noqa: BLE001 - unsure counts as stored: no needless backfill
+            _LOGGER.exception("Could not check stored statistics for %s", statistic_id)
+            return True
+        return bool(last.get(statistic_id))
+
     def _import_statistics(self, snap: Snapshot) -> None:
         """Push the fetched history into HA's recorder — every cycle, not once.
 
@@ -106,7 +118,7 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
         if snap.hourly:
             import_hourly_sum_series(
                 self.hass,
-                statistic_id=f"{STATS_SOURCE}:hourly_consumption_{slug}",
+                statistic_id=_consumption_id("hourly", cnum),
                 name=f"Veolia {cnum} hourly consumption",
                 unit_of_measurement="m³",
                 hourly_values=[(h.start, h.lectura_m3) for h in snap.hourly],
@@ -122,7 +134,7 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
         if snap.daily:
             import_daily_series(
                 self.hass,
-                statistic_id=f"{STATS_SOURCE}:daily_consumption_{slug}",
+                statistic_id=_consumption_id("daily", cnum),
                 name=f"Veolia {cnum} daily consumption",
                 unit_of_measurement="m³",
                 daily_values=[(d.fecha, d.consumo_m3) for d in snap.daily],
@@ -137,11 +149,16 @@ class VeoliaCoordinator(DataUpdateCoordinator[dict[str, Snapshot]]):
         if snap.monthly:
             import_daily_series(
                 self.hass,
-                statistic_id=f"{STATS_SOURCE}:monthly_consumption_{slug}",
+                statistic_id=_consumption_id("monthly", cnum),
                 name=f"Veolia {cnum} monthly consumption",
                 unit_of_measurement="m³",
                 daily_values=[(date(m.year, m.month, 1), m.consumo_m3) for m in snap.monthly],
             )
+
+
+def _consumption_id(series: str, contract_number: str) -> str:
+    """Statistic id of a consumption series; `_is_stored` checks the same ids."""
+    return f"{STATS_SOURCE}:{series}_consumption_{_slug(contract_number)}"
 
 
 def _slug(contract_number: str) -> str:

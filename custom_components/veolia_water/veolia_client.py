@@ -16,7 +16,13 @@ from urllib.parse import urlencode, urlsplit
 
 import aiohttp
 
-from .const import CONSUMOS_PAGE_SIZE, DAILY_WINDOW_DAYS, HOURLY_WINDOW_DAYS
+from .const import (
+    CONSUMOS_PAGE_SIZE,
+    DAILY_WINDOW_DAYS,
+    HOURLY_WINDOW_DAYS,
+    MAX_CONSUMOS_PAGES,
+    MONTHLY_WINDOW_MONTHS,
+)
 from .models import Contract
 from .parser import ParseError, parse_contract_list
 from .portal import (
@@ -38,6 +44,12 @@ LOGIN_ATTEMPTS = 5
 LOGIN_RETRY_DELAY = 3.0
 
 
+def month_start(d: date, months_back: int = 0) -> date:
+    """The 1st of the month `months_back` months before `d`'s month."""
+    index = d.year * 12 + d.month - 1 - months_back
+    return date(index // 12, index % 12 + 1, 1)
+
+
 class VeoliaError(Exception):
     """Base error for any non-recoverable portal failure."""
 
@@ -56,6 +68,14 @@ class CDNBlockedError(VeoliaError):
 
 class SessionExpiredError(VeoliaError):
     """A request landed back on /login mid-cycle."""
+
+
+class PortalHTTPError(VeoliaError):
+    """A portal endpoint answered with an unexpected HTTP status."""
+
+    def __init__(self, op: str, status: int) -> None:
+        super().__init__(f"{op} returned HTTP {status}")
+        self.status = status
 
 
 # Safety stop for the contract list's paging loop.
@@ -329,30 +349,38 @@ class VeoliaClient:
 
     async def fetch_consumos_range(
         self, p_auth: str, fecha_inicio: date, fecha_fin: date, *, tipo: str,
+        keep_partial: bool = True,
     ) -> dict:
         """Every row of `fecha_inicio..fecha_fin` for `tipo` (`horaria`/`diaria`/`mensual`).
 
         The portal caps a query at ~1000 rows and returns nothing for windows
         that are too long, so the range is cut into windows (walked newest to
-        oldest) and each one is paged. Stops after two empty windows in a row,
-        i.e. before the meter existed. Returns the same shape as one response
+        oldest) and each one is paged. Monthly windows hold whole calendar
+        months, so no month is split across two queries. Stops after two empty
+        windows in a row, i.e. before the meter existed. Returns the same shape as one response
         (`{"consumos": [...]}`, newest first).
 
         A window that fails after some rows were already read ends the walk
-        with what we have rather than discarding it.
+        with what we have rather than discarding it, unless `keep_partial` is
+        False: then any failure raises, so an incomplete backfill isn't stored.
         """
         window = HOURLY_WINDOW_DAYS if tipo == "horaria" else DAILY_WINDOW_DAYS
+        if tipo == "mensual":
+            fecha_inicio = month_start(fecha_inicio)
         consumos: list = []
         end = fecha_fin
         empty_in_a_row = 0
         while end >= fecha_inicio and empty_in_a_row < 2:
-            start = max(fecha_inicio, end - timedelta(days=window - 1))
+            if tipo == "mensual":
+                start = max(fecha_inicio, month_start(end, MONTHLY_WINDOW_MONTHS - 1))
+            else:
+                start = max(fecha_inicio, end - timedelta(days=window - 1))
             try:
                 rows = await self._fetch_window(p_auth, start, end, tipo)
             except (SessionExpiredError, CDNBlockedError):
                 raise
             except VeoliaError as e:
-                if not consumos:
+                if not consumos or not keep_partial:
                     raise
                 _LOGGER.warning("%s %s..%s failed (%s); keeping what was read.", tipo, start, end, e)
                 break
@@ -363,31 +391,37 @@ class VeoliaClient:
 
     async def _fetch_window(self, p_auth: str, start: date, end: date, tipo: str) -> list:
         rows: list = []
-        first = 0
-        while True:
-            payload = await self._fetch_page_retrying(p_auth, start, end, tipo, first)
+        for number in range(MAX_CONSUMOS_PAGES):
+            payload = await self._fetch_page_retrying(
+                p_auth, start, end, tipo, number * CONSUMOS_PAGE_SIZE,
+            )
             page = payload.get("consumos") or [] if isinstance(payload, dict) else []
             rows.extend(page)
             if not page or payload.get("ultimaPagina", True):
                 return rows
-            first += CONSUMOS_PAGE_SIZE
+        _LOGGER.warning(
+            "%s %s..%s still had more pages after %d; keeping those.",
+            tipo, start, end, MAX_CONSUMOS_PAGES,
+        )
+        return rows
 
     async def _fetch_page_retrying(self, p_auth, start, end, tipo, first) -> dict:
         """One page, retrying the portal's transient 5xx (it throws 504s now and then)."""
-        for attempt in (1, 2, 3):
+        async def fetch() -> dict:
+            # `fin` is inclusive.
+            return await self.fetch_buscar_consumos(
+                p_auth, start, end, tipo=tipo,
+                inicio=first, fin=first + CONSUMOS_PAGE_SIZE - 1,
+            )
+
+        for attempt in (1, 2):
             try:
-                # `fin` is inclusive.
-                return await self.fetch_buscar_consumos(
-                    p_auth, start, end, tipo=tipo,
-                    inicio=first, fin=first + CONSUMOS_PAGE_SIZE - 1,
-                )
-            except (SessionExpiredError, CDNBlockedError):
-                raise
-            except VeoliaError as e:
-                if attempt == 3 or " returned HTTP 5" not in str(e):
+                return await fetch()
+            except PortalHTTPError as e:
+                if not 500 <= e.status < 600:
                     raise
-                await asyncio.sleep(2 * attempt)
-        raise AssertionError("unreachable")
+            await asyncio.sleep(2 * attempt)
+        return await fetch()
 
     async def probe_login_page(self) -> Optional[str]:
         """Return the p_auth token from /login, or None if blocked/missing.
@@ -452,7 +486,7 @@ class VeoliaClient:
         if status == 401:
             raise SessionExpiredError(f"{op} returned 401")
         if status != 200:
-            raise VeoliaError(f"{op} returned HTTP {status}")
+            raise PortalHTTPError(op, status)
         if not body:
             return {}
         try:

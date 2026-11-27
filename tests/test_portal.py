@@ -1,5 +1,6 @@
 import asyncio
 import json
+from datetime import date
 
 import pytest
 
@@ -11,6 +12,7 @@ from custom_components.veolia_water.portal import (
 )
 from custom_components.veolia_water.veolia_client import (
     LoginError,
+    PortalHTTPError,
     UnsupportedPortalError,
     VeoliaClient,
     VeoliaError,
@@ -253,6 +255,18 @@ def test_a_login_that_keeps_bouncing_gives_up_without_blaming_the_password(monke
     with pytest.raises(VeoliaError) as exc:
         asyncio.run(c.login())
     assert not isinstance(exc.value, LoginError)
+
+
+def test_consumos_http_errors_carry_their_status(monkeypatch):
+    c = VeoliaClient("u", "p")
+
+    async def fake_get(url):
+        return (502, url, "")
+
+    monkeypatch.setattr(c, "_get", fake_get)
+    with pytest.raises(PortalHTTPError) as exc:
+        asyncio.run(c.fetch_buscar_consumos("t", date(2026, 5, 1), date(2026, 5, 1), tipo="horaria"))
+    assert exc.value.status == 502
 
 
 # ----- contract selection ----------------------------------------------------

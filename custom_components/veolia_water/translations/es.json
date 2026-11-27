@@ -74,9 +74,9 @@
       "last_invoice_issue_date": {"name": "Fecha de emisión de la última factura"},
       "current_period_end_estimate": {"name": "Fin del periodo actual (estimado)"},
       "next_invoice_date_estimate": {"name": "Próxima factura (estimada)"},
-      "flow_qmax_today": {"name": "Caudal máximo de hoy"},
-      "flow_qmin_today": {"name": "Caudal mínimo de hoy"},
-      "flow_qmax_time_today": {"name": "Hora del caudal máximo de hoy"},
+      "flow_qmax_today": {"name": "Caudal máximo (último día)"},
+      "flow_qmin_today": {"name": "Caudal mínimo (último día)"},
+      "flow_qmax_time_today": {"name": "Hora del caudal máximo (último día)"},
       "flow_data_date": {"name": "Fecha del último dato de caudal"},
       "possible_leak": {"name": "Posible fuga"}
     }

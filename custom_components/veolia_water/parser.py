@@ -389,8 +389,12 @@ def parse_hourly_response(payload: dict) -> list[HourlyConsumption]:
 
 
 def parse_monthly_response(payload: dict) -> list[MonthlyConsumption]:
-    """Parse the monthly list — `fechaConsumo` is '<month-token> <year>'."""
+    """Parse the monthly list — `fechaConsumo` is '<month-token> <year>'.
+
+    One row per month: a month repeated across request windows keeps its first row.
+    """
     out: list[MonthlyConsumption] = []
+    seen: set[tuple[int, int]] = set()
     if not isinstance(payload, dict):
         return out
     for item in payload.get("consumos") or []:
@@ -412,6 +416,9 @@ def parse_monthly_response(payload: dict) -> list[MonthlyConsumption]:
             year = int(year_token)
         except ValueError:
             continue
+        if (year, month) in seen:
+            continue
+        seen.add((year, month))
         out.append(MonthlyConsumption(
             year=year,
             month=month,
