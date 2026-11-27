@@ -6,6 +6,8 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-27
+
 ### Added
 - A **Get data now** button on each contract's device that polls the portal
   immediately, so a long poll interval doesn't mean waiting for fresh data.
